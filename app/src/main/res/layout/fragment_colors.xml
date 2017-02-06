@@ -1,0 +1,90 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.e2esp.bergerpaint.fragments.ColorsFragment">
+
+    <LinearLayout
+        android:id="@+id/linearLayoutColorChoiceContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="@dimen/margin_small"
+        android:padding="@dimen/margin_tiny"
+        android:orientation="horizontal" >
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/textViewChooseWall"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:layout_marginRight="@dimen/margin_tiny"
+            android:padding="@dimen/margin_tiny"
+            android:gravity="center"
+            android:drawableLeft="@mipmap/drop_down_arrow"
+            android:lines="1"
+            android:text="@string/choose_a_wall"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_medium_upper"
+            android:textStyle="bold"
+            android:background="@drawable/bordered_button" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/textViewChooseColor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:padding="@dimen/margin_tiny"
+            android:gravity="center"
+            android:drawableRight="@mipmap/drop_down_arrow"
+            android:lines="1"
+            android:text="@string/choose_a_color"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_medium_upper"
+            android:textStyle="bold"
+            android:background="@drawable/bordered_button" />
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerViewColorsTray"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearLayoutColorChoiceContainer"
+        android:layout_above="@+id/textViewNext"
+        android:scrollbars="vertical" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerViewWallsTray"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearLayoutColorChoiceContainer"
+        android:layout_above="@+id/textViewNext"
+        android:scrollbars="vertical" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutPictureContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/linearLayoutColorChoiceContainer"
+        android:layout_above="@+id/textViewNext"
+        android:layout_margin="@dimen/margin_tiny" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/textViewNext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/margin_tiny"
+        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_marginRight="@dimen/margin_small"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:padding="@dimen/margin_small"
+        android:gravity="center"
+        android:text="@string/next_select_product"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_large"
+        android:textStyle="bold"
+        android:background="@drawable/bordered_button" />
+
+</RelativeLayout>

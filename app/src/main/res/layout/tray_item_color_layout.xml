@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <ImageView
+        android:id="@+id/imageViewPrimaryColor"
+        android:layout_width="@dimen/color_box_size"
+        android:layout_height="@dimen/color_box_size"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="@dimen/margin_small"
+        android:src="@drawable/color_box_left" />
+
+    <ImageView
+        android:id="@+id/imageViewColorBoxArrow"
+        android:layout_width="@dimen/color_box_size"
+        android:layout_height="@dimen/color_box_size"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="@dimen/margin_small"
+        android:src="@drawable/box_arrow_left"
+        android:visibility="gone" />
+
+    <HorizontalScrollView
+        android:id="@+id/scrollViewSecondaryColors"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@+id/imageViewPrimaryColor"
+        android:layout_centerVertical="true"
+        android:scrollbars="horizontal" >
+
+        <LinearLayout
+            android:id="@+id/linearLayoutSecondaryColors"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" />
+
+    </HorizontalScrollView>
+
+</RelativeLayout>

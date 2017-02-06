@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Berger Paint</string>
+
+    <string name="welcome">Welcome</string>
+    <string name="rooms">Rooms</string>
+    <string name="colors">Colors</string>
+    <string name="products">Products</string>
+
+    <string name="welcome_text">Berger was established two centuries ago and now it has grown to become one of the world\’s largest paints manufacturer. In Pakistan, history of Berger is as old as history of Pakistan. Berger started its operations in Pakistan in 1950.</string>
+
+    <string name="lets_get_started">Lets get started!</string>
+
+    <string name="choose_a_room">Choose a Room</string>
+    <string name="next_select_colors">Next: Select Colors >></string>
+
+    <string name="choose_a_wall">Choose a Wall</string>
+    <string name="choose_a_color">Choose a Color</string>
+    <string name="next_select_product">Next: Select Product >></string>
+
+    <string name="select_your_paint">Select your Paint</string>
+
+    <string name="product_name">Product Name</string>
+    <string name="product_description">Product Description</string>
+
+    <string name="buy">Buy</string>
+    <string name="learn_more">Learn More</string>
+
+    <string name="press_back_again_to_exit">Press BACK again to exit</string>
+
+</resources>

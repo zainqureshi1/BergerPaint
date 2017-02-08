@@ -12,13 +12,13 @@ public class PrimaryColor extends SecondaryColor {
     private boolean trayOpen;
 
     public PrimaryColor(int color, String name, ArrayList<SecondaryColor> secondaryColors) {
-        super(color, name);
+        super(color, name, "");
         this.secondaryColors = secondaryColors;
         this.trayOpen = false;
     }
 
-    public PrimaryColor(int color, String name, boolean autoGenerateSecondaryColors) {
-        super(color, name);
+    /*public PrimaryColor(int color, String name, boolean autoGenerateSecondaryColors) {
+        super(color, name, "");
         this.secondaryColors = new ArrayList<>();
         if (autoGenerateSecondaryColors) {
             String hex = Integer.toHexString(color);
@@ -36,13 +36,12 @@ public class PrimaryColor extends SecondaryColor {
                 if (gHex.length() < 2) gHex = 0 + gHex;
                 String bHex = Integer.toHexString(b1);
                 if (bHex.length() < 2) bHex = 0 + bHex;
-                //String hex1 = String.format("%1$02d%2$02d%3$02d%4$02d", a, r1, g1, b1);
                 String hex1 = aHex + rHex + gHex + bHex;
                 this.secondaryColors.add(new SecondaryColor((int) Long.parseLong(hex1, 16), name + " " + i));
             }
         }
         this.trayOpen = false;
-    }
+    }*/
 
     public ArrayList<SecondaryColor> getSecondaryColors() {
         return secondaryColors;

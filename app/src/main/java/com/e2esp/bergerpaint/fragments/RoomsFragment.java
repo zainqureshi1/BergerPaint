@@ -88,7 +88,7 @@ public class RoomsFragment extends Fragment {
         roomRecyclerAdapter = new RoomRecyclerAdapter(getContext(), arrayListRooms, new OnRoomClickListener() {
             @Override
             public void onRoomClick(Room room) {
-                selectRoom(room);
+                selectRoom(room, false);
             }
         });
 
@@ -124,10 +124,10 @@ public class RoomsFragment extends Fragment {
 
         roomRecyclerAdapter.notifyDataSetChanged();
 
-        selectRoom(arrayListRooms.get(0));
+        selectRoom(arrayListRooms.get(0), true);
     }
 
-    private void selectRoom(Room room) {
+    private void selectRoom(Room room, boolean def) {
         for (int i = 0; i < arrayListRooms.size(); i++) {
             arrayListRooms.get(i).setSelected(false);
         }
@@ -135,7 +135,7 @@ public class RoomsFragment extends Fragment {
         selectedRoom.setSelected(true);
         roomRecyclerAdapter.notifyDataSetChanged();
 
-        onFragmentInteractionListener.onInteraction(OnFragmentInteractionListener.ROOM_SELECTED, selectedRoom);
+        onFragmentInteractionListener.onInteraction(def ? OnFragmentInteractionListener.DEFAULT_ROOM_SELECTED : OnFragmentInteractionListener.ROOM_SELECTED, selectedRoom);
     }
 
     private void nextClicked() {

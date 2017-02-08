@@ -80,7 +80,7 @@ public class ColorsTrayRecyclerAdapter extends RecyclerView.Adapter<ColorsTrayRe
             linearLayoutSecondaryColors.removeAllViews();
             if (primaryColor.isTrayOpen()) {
                 ArrayList<SecondaryColor> secondaryColors = primaryColor.getSecondaryColors();
-                for (int i = secondaryColors.size()-1; i >= 0 ; i--) {
+                for (int i = 0; i < secondaryColors.size() ; i++) {
                     final SecondaryColor secondaryColor = secondaryColors.get(i);
 
                     ImageView imageView = new ImageView(context);

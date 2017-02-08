@@ -89,6 +89,15 @@ public class MainActivity extends FragmentActivity implements OnFragmentInteract
     @Override
     public void onInteraction(int type, Object obj) {
         switch (type) {
+            case DEFAULT_ROOM_SELECTED:
+                final Room room = (Room) obj;
+                viewPager.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        ColorsFragment.setSelectedRoom(room);
+                    }
+                }, 1000);
+                break;
             case ROOM_SELECTED:
                 ColorsFragment.setSelectedRoom((Room) obj);
                 break;

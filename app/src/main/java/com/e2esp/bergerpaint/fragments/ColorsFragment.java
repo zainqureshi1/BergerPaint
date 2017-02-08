@@ -785,8 +785,6 @@ public class ColorsFragment extends Fragment {
 
         relativeLayoutPictureContainer.removeAllViews();
 
-        addRoomImage(room.getImageRes(), room.getName());
-
         ArrayList<Wall> walls = room.getWallsList();
         if (walls != null && walls.size() > 0) {
             for (int i = 0; i < walls.size(); i++) {
@@ -798,6 +796,8 @@ public class ColorsFragment extends Fragment {
                 }
             }
         }
+
+        addRoomImage(room.getTransparentImageRes(), room.getName());
 
         textViewChooseWall.setText(R.string.choose_a_wall);
         selectedColor = allColorsList.get(0);

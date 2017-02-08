@@ -103,24 +103,9 @@ public class RoomsFragment extends Fragment {
 
         ArrayList<Wall> walls;
 
-        for (int i = 0; i < 3; i++) {
-            walls = new ArrayList<>();
-            walls.add(new Wall("Front Wall", R.drawable.bedroom_1_1));
-            walls.add(new Wall("Side Wall", R.drawable.bedroom_1_2));
-            arrayListRooms.add(new Room("Bedroom", R.drawable.bedroom_1, walls));
-
-            walls = new ArrayList<>();
-            walls.add(new Wall("Front Wall", R.drawable.kitchen_1_1));
-            arrayListRooms.add(new Room("Kitchen", R.drawable.kitchen_1, walls));
-
-            walls = new ArrayList<>();
-            walls.add(new Wall("Front Wall", R.drawable.kitchen_2_1));
-            arrayListRooms.add(new Room("Kitchen", R.drawable.kitchen_2, walls));
-
-            walls = new ArrayList<>();
-            walls.add(new Wall("Front Wall", R.drawable.bedroom_2_1));
-            arrayListRooms.add(new Room("Bedroom", R.drawable.bedroom_2, walls));
-        }
+        walls = new ArrayList<>();
+        walls.add(new Wall("Front Wall", R.drawable.room_01_01));
+        arrayListRooms.add(new Room("Bedroom", R.drawable.room_01, R.drawable.room_01_00, walls));
 
         roomRecyclerAdapter.notifyDataSetChanged();
 

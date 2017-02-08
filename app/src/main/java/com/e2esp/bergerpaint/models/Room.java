@@ -9,18 +9,16 @@ import java.util.ArrayList;
 public class Room {
     private String name;
     private int imageRes;
+    private int transparentImageRes;
 
     private ArrayList<Wall> wallsList;
 
     private boolean selected;
 
-    public Room(String name, int imageRes) {
-        this(name, imageRes, new ArrayList<Wall>());
-    }
-
-    public Room(String name, int imageRes, ArrayList<Wall> wallsList) {
+    public Room(String name, int imageRes, int transparentImageRes, ArrayList<Wall> wallsList) {
         this.name = name;
         this.imageRes = imageRes;
+        this.transparentImageRes = transparentImageRes;
         this.wallsList = wallsList;
         this.selected = false;
     }
@@ -31,6 +29,10 @@ public class Room {
 
     public int getImageRes() {
         return imageRes;
+    }
+
+    public int getTransparentImageRes() {
+        return transparentImageRes;
     }
 
     public ArrayList<Wall> getWallsList() {

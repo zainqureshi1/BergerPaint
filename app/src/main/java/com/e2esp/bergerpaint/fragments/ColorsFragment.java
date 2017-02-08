@@ -8,10 +8,12 @@ import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.e2esp.bergerpaint.R;
@@ -34,8 +36,11 @@ public class ColorsFragment extends Fragment {
 
     private AppCompatTextView textViewChooseWall;
     private AppCompatTextView textViewChooseColor;
+    private AppCompatTextView textViewShadesOfColor;
 
     private RelativeLayout relativeLayoutPictureContainer;
+    private RelativeLayout relativeLayoutColorsTrayContainer;
+    private LinearLayout linearLayoutSecondaryColorsTrayContainer;
 
     private RecyclerView recyclerViewWallsTray;
     private ArrayList<Wall> wallsList;
@@ -117,7 +122,11 @@ public class ColorsFragment extends Fragment {
             }
         });
 
+        textViewShadesOfColor = (AppCompatTextView) view.findViewById(R.id.textViewShadesOfColor);
+
         relativeLayoutPictureContainer = (RelativeLayout) view.findViewById(R.id.relativeLayoutPictureContainer);
+        relativeLayoutColorsTrayContainer = (RelativeLayout) view.findViewById(R.id.relativeLayoutColorsTrayContainer);
+        linearLayoutSecondaryColorsTrayContainer = (LinearLayout) view.findViewById(R.id.linearLayoutSecondaryColorsTrayContainer);
 
         recyclerViewWallsTray = (RecyclerView) view.findViewById(R.id.recyclerViewWallsTray);
         wallsList = new ArrayList<>();
@@ -137,10 +146,6 @@ public class ColorsFragment extends Fragment {
             @Override
             public void onPrimaryColorClick(PrimaryColor color) {
                 primaryColorClicked(color);
-            }
-            @Override
-            public void onSecondaryColorClick(SecondaryColor color) {
-                secondaryColorClicked(color);
             }
         });
         recyclerViewColorsTray.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
@@ -724,7 +729,7 @@ public class ColorsFragment extends Fragment {
     private void showColorsTray() {
         hideWallsTray();
         colorsTrayVisible = true;
-        recyclerViewColorsTray.bringToFront();
+        relativeLayoutColorsTrayContainer.bringToFront();
         showColorsTray(0);
     }
 
@@ -746,7 +751,64 @@ public class ColorsFragment extends Fragment {
         colorsTrayVisible = false;
         activeColorsList.clear();
         colorsRecyclerAdapter.notifyDataSetChanged();
+        textViewShadesOfColor.setText("");
+        linearLayoutSecondaryColorsTrayContainer.removeAllViews();
         relativeLayoutPictureContainer.bringToFront();
+    }
+
+    private void showSecondaryColorsTray(PrimaryColor color) {
+        textViewShadesOfColor.setText(getString(R.string.shades_of_color, color.getName()));
+        textViewShadesOfColor.setTextColor(color.getColor());
+        linearLayoutSecondaryColorsTrayContainer.removeAllViews();
+
+        int containerWidth = ((View) linearLayoutSecondaryColorsTrayContainer.getParent()).getWidth();
+        int colorBoxSize = getResources().getDimensionPixelSize(R.dimen.color_box_size);
+        int colorBoxMargin = getResources().getDimensionPixelSize(R.dimen.margin_small);
+        int boxLimit = (int)((float)(containerWidth + colorBoxMargin) / (float)(colorBoxMargin + colorBoxSize + colorBoxMargin));
+
+        ArrayList<SecondaryColor> secondaryColors = color.getSecondaryColors();
+        LinearLayout linearLayoutColorsTray = null;
+        int totalColors = secondaryColors.size();
+        for (int i = 0; i < totalColors; i++) {
+            final SecondaryColor secondaryColor = secondaryColors.get(totalColors - 1 - i);
+
+            if (i % boxLimit == 0) {
+                linearLayoutColorsTray = new LinearLayout(getContext());
+                linearLayoutColorsTray.setVisibility(View.GONE);
+                linearLayoutColorsTray.setGravity(Gravity.CENTER_HORIZONTAL);
+                LinearLayout.LayoutParams layoutParamsColorsTray = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                linearLayoutSecondaryColorsTrayContainer.addView(linearLayoutColorsTray, layoutParamsColorsTray);
+            }
+
+            ImageView imageView = new ImageView(getContext());
+            imageView.setImageResource(R.drawable.color_box);
+            imageView.setColorFilter(secondaryColor.getColor());
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    secondaryColorClicked(secondaryColor);
+                }
+            });
+
+            LinearLayout.LayoutParams imageViewParams = new LinearLayout.LayoutParams(colorBoxSize, colorBoxSize);
+            imageViewParams.setMargins(colorBoxMargin, colorBoxMargin, colorBoxMargin, colorBoxMargin);
+            linearLayoutColorsTray.addView(imageView, imageViewParams);
+        }
+
+        showSecondaryColors(0);
+    }
+
+    private void showSecondaryColors(final int iteration) {
+        if (iteration >= linearLayoutSecondaryColorsTrayContainer.getChildCount()) {
+            return;
+        }
+        linearLayoutSecondaryColorsTrayContainer.getChildAt(iteration).setVisibility(View.VISIBLE);
+        linearLayoutSecondaryColorsTrayContainer.post(new Runnable() {
+            @Override
+            public void run() {
+                showSecondaryColors(iteration + 1);
+            }
+        });
     }
 
     private void primaryColorClicked(PrimaryColor color) {
@@ -758,7 +820,7 @@ public class ColorsFragment extends Fragment {
             activeColorsList.get(i).setTrayOpen(false);
         }
         color.setTrayOpen(true);
-        colorsRecyclerAdapter.notifyDataSetChanged();
+        showSecondaryColorsTray(color);
     }
 
     private void secondaryColorClicked(SecondaryColor color) {

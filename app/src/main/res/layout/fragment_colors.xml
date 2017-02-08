@@ -46,13 +46,49 @@
 
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerViewColorsTray"
+    <RelativeLayout
+        android:id="@+id/relativeLayoutColorsTrayContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/linearLayoutColorChoiceContainer"
-        android:layout_above="@+id/textViewNext"
-        android:scrollbars="vertical" />
+        android:layout_above="@+id/textViewNext" >
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerViewColorsTray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:scrollbars="vertical" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/recyclerViewColorsTray" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/textViewShadesOfColor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="@string/shades_of_color"
+                    android:textSize="@dimen/text_size_medium" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutSecondaryColorsTrayContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerViewWallsTray"

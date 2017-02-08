@@ -9,5 +9,4 @@ import com.e2esp.bergerpaint.models.SecondaryColor;
 
 public interface OnTraysColorClickListener {
     void onPrimaryColorClick(PrimaryColor color);
-    void onSecondaryColorClick(SecondaryColor color);
 }

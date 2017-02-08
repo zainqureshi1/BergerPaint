@@ -7,13 +7,11 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.e2esp.bergerpaint.R;
-import com.e2esp.bergerpaint.adapters.GridSpacingItemDecoration;
 import com.e2esp.bergerpaint.adapters.ProductRecyclerAdapter;
 import com.e2esp.bergerpaint.adapters.VerticalSpacingItemDecoration;
 import com.e2esp.bergerpaint.interfaces.OnProductClickListener;

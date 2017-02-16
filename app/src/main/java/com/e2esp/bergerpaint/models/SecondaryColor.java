@@ -10,10 +10,12 @@ public class SecondaryColor {
 
     private int color;
     private String name;
+    private String colorCode;
 
-    public SecondaryColor(int color, String name) {
+    public SecondaryColor(int color, String name, String colorCode) {
         this.color = color;
         this.name = name;
+        this.colorCode = colorCode;
     }
 
     public int getColor() {
@@ -22,6 +24,10 @@ public class SecondaryColor {
 
     public String getName() {
         return name;
+    }
+
+    public String getColorCode() {
+        return colorCode;
     }
 
 }

@@ -3,7 +3,6 @@ package com.e2esp.bergerpaint.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
@@ -11,8 +10,6 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
-import android.widget.ViewFlipper;
 
 import com.e2esp.bergerpaint.R;
 import com.e2esp.bergerpaint.adapters.GridSpacingItemDecoration;
@@ -88,7 +85,7 @@ public class RoomsFragment extends Fragment {
         roomRecyclerAdapter = new RoomRecyclerAdapter(getContext(), arrayListRooms, new OnRoomClickListener() {
             @Override
             public void onRoomClick(Room room) {
-                selectRoom(room);
+                selectRoom(room, false);
             }
         });
 
@@ -103,31 +100,33 @@ public class RoomsFragment extends Fragment {
 
         ArrayList<Wall> walls;
 
-        for (int i = 0; i < 3; i++) {
-            walls = new ArrayList<>();
-            walls.add(new Wall("Front Wall", R.drawable.bedroom_1_1));
-            walls.add(new Wall("Side Wall", R.drawable.bedroom_1_2));
-            arrayListRooms.add(new Room("Bedroom", R.drawable.bedroom_1, walls));
+        walls = new ArrayList<>();
+        walls.add(new Wall("Front Wall", R.drawable.room_01_01));
+        arrayListRooms.add(new Room("Open Bedroom", R.drawable.room_01, R.drawable.room_01_00, walls));
 
-            walls = new ArrayList<>();
-            walls.add(new Wall("Front Wall", R.drawable.kitchen_1_1));
-            arrayListRooms.add(new Room("Kitchen", R.drawable.kitchen_1, walls));
+        walls = new ArrayList<>();
+        walls.add(new Wall("Back Wall", R.drawable.room_02_01));
+        arrayListRooms.add(new Room("Bedroom", R.drawable.room_02, R.drawable.room_02_00, walls));
 
-            walls = new ArrayList<>();
-            walls.add(new Wall("Front Wall", R.drawable.kitchen_2_1));
-            arrayListRooms.add(new Room("Kitchen", R.drawable.kitchen_2, walls));
+        walls = new ArrayList<>();
+        walls.add(new Wall("Front Wall", R.drawable.room_03_01));
+        arrayListRooms.add(new Room("TV Lounge", R.drawable.room_03, R.drawable.room_03_00, walls));
 
-            walls = new ArrayList<>();
-            walls.add(new Wall("Front Wall", R.drawable.bedroom_2_1));
-            arrayListRooms.add(new Room("Bedroom", R.drawable.bedroom_2, walls));
-        }
+        walls = new ArrayList<>();
+        walls.add(new Wall("Side Wall", R.drawable.room_04_01));
+        arrayListRooms.add(new Room("Open Bedroom", R.drawable.room_04, R.drawable.room_04_00, walls));
+
+        walls = new ArrayList<>();
+        walls.add(new Wall("Front Wall", R.drawable.room_05_01));
+        walls.add(new Wall("Roof", R.drawable.room_05_02));
+        arrayListRooms.add(new Room("Small Bedroom", R.drawable.room_05, R.drawable.room_05_00, walls));
 
         roomRecyclerAdapter.notifyDataSetChanged();
 
-        selectRoom(arrayListRooms.get(0));
+        selectRoom(arrayListRooms.get(0), true);
     }
 
-    private void selectRoom(Room room) {
+    private void selectRoom(Room room, boolean def) {
         for (int i = 0; i < arrayListRooms.size(); i++) {
             arrayListRooms.get(i).setSelected(false);
         }
@@ -135,7 +134,7 @@ public class RoomsFragment extends Fragment {
         selectedRoom.setSelected(true);
         roomRecyclerAdapter.notifyDataSetChanged();
 
-        onFragmentInteractionListener.onInteraction(OnFragmentInteractionListener.ROOM_SELECTED, selectedRoom);
+        onFragmentInteractionListener.onInteraction(def ? OnFragmentInteractionListener.DEFAULT_ROOM_SELECTED : OnFragmentInteractionListener.ROOM_SELECTED, selectedRoom);
     }
 
     private void nextClicked() {

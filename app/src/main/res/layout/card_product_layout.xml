@@ -8,7 +8,7 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="@dimen/product_card_height"
-        app:cardBackgroundColor="@color/slight_transparent"
+        app:cardBackgroundColor="@color/slight_opaque"
         app:cardElevation="0dp" >
 
         <LinearLayout

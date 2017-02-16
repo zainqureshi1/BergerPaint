@@ -5,7 +5,8 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="transparent">#00000000</color>
-    <color name="slight_transparent">#33333333</color>
+    <color name="slight_opaque">#33333333</color>
+    <color name="slight_transparent">#AA000000</color>
     <color name="gray">#D6D6D6</color>
     <color name="dark_gray">#505050</color>
     <color name="soft_green">#C0D890</color>

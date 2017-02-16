@@ -252,7 +252,7 @@ public class ColorsFragment extends Fragment {
         secondaryColors.add(new SecondaryColor(Color.parseColor("#e0ead7"), "Eternal Bliss", "3-20-2"));
         secondaryColors.add(new SecondaryColor(Color.parseColor("#d6eacf"), "Cool Comfort", "2-21-2"));
 
-        allColorsList.add(new PrimaryColor(Color.parseColor("#ffffff"), "White", secondaryColors));
+        allColorsList.add(new PrimaryColor(Color.parseColor("#e9e8e9"), "Calm Spirit", secondaryColors));
 
         // Shades of Yellow
         secondaryColors = new ArrayList<>();
@@ -270,7 +270,7 @@ public class ColorsFragment extends Fragment {
         secondaryColors.add(new SecondaryColor(Color.parseColor("#caa800"), "Yangtze", "2-15-7"));
         secondaryColors.add(new SecondaryColor(Color.parseColor("#fabd00"), "Gold Finger", "1-12-7"));
 
-        allColorsList.add(new PrimaryColor(Color.parseColor("#ffff00"), "Yellow", secondaryColors));
+        allColorsList.add(new PrimaryColor(Color.parseColor("#fabd00"), "Gold Finger", secondaryColors));
 
         // Shades of Red
         secondaryColors = new ArrayList<>();
@@ -333,7 +333,7 @@ public class ColorsFragment extends Fragment {
         secondaryColors.add(new SecondaryColor(Color.parseColor("#aa5a47"), "Coral Bead", "3-4-6"));
         secondaryColors.add(new SecondaryColor(Color.parseColor("#9a452a"), "Apache", "3-4-7"));
 
-        allColorsList.add(new PrimaryColor(Color.parseColor("#ff0000"), "Red", secondaryColors));
+        allColorsList.add(new PrimaryColor(Color.parseColor("#9d2e30"), "Blaze", secondaryColors));
 
         // Shades of Blue
         secondaryColors = new ArrayList<>();
@@ -434,7 +434,7 @@ public class ColorsFragment extends Fragment {
         secondaryColors.add(new SecondaryColor(Color.parseColor("#004f75"), "Victor Harbour", "3-33-7"));
         secondaryColors.add(new SecondaryColor(Color.parseColor("#273a7c"), "Lobelia", "2-37-7"));
 
-        allColorsList.add(new PrimaryColor(Color.parseColor("#0000ff"), "Blue", secondaryColors));
+        allColorsList.add(new PrimaryColor(Color.parseColor("#004a75"), "Blue Vision", secondaryColors));
 
         // Shades of Orange
         secondaryColors = new ArrayList<>();
@@ -470,7 +470,7 @@ public class ColorsFragment extends Fragment {
         secondaryColors.add(new SecondaryColor(Color.parseColor("#f4e1ce"), "Peach Pinch", "2-6-2"));
         secondaryColors.add(new SecondaryColor(Color.parseColor("#ffea96"), "Buttercup Bouquet", "1-12-3"));
 
-        allColorsList.add(new PrimaryColor(Color.parseColor("#ffa500"), "Orange", secondaryColors));
+        allColorsList.add(new PrimaryColor(Color.parseColor("#e85d3a"), "Orange Harvest", secondaryColors));
 
         // Shades of Green
         secondaryColors = new ArrayList<>();
@@ -583,7 +583,7 @@ public class ColorsFragment extends Fragment {
         secondaryColors.add(new SecondaryColor(Color.parseColor("#008e63"), "Willawong", "2-25-6"));
         secondaryColors.add(new SecondaryColor(Color.parseColor("#006240"), "Noonday Tide", "3-26-7"));
 
-        allColorsList.add(new PrimaryColor(Color.parseColor("#00ff00"), "Green", secondaryColors));
+        allColorsList.add(new PrimaryColor(Color.parseColor("#007837"), "Tropic Green", secondaryColors));
 
         // Shades of Violet
         secondaryColors = new ArrayList<>();
@@ -661,7 +661,7 @@ public class ColorsFragment extends Fragment {
         secondaryColors.add(new SecondaryColor(Color.parseColor("#981c53"), "Scarlet O'Hara", "2-46-7A"));
         secondaryColors.add(new SecondaryColor(Color.parseColor("#913168"), "Razzle Dazzle", "2-44-7"));
 
-        allColorsList.add(new PrimaryColor(Color.parseColor("#7d28c8"), "Violet", secondaryColors));
+        allColorsList.add(new PrimaryColor(Color.parseColor("#ab436f"), "Pink Interlude", secondaryColors));
 
         // Shades of Brown
         secondaryColors = new ArrayList<>();
@@ -697,7 +697,7 @@ public class ColorsFragment extends Fragment {
         secondaryColors.add(new SecondaryColor(Color.parseColor("#c6c477"), "Weeping Willow", "3-16-5"));
         secondaryColors.add(new SecondaryColor(Color.parseColor("#aca54e"), "Fancy Free", "3-16-6"));
         secondaryColors.add(new SecondaryColor(Color.parseColor("#c7ab4b"), "Filigree Gold", "3-13-6"));
-        secondaryColors.add(new SecondaryColor(Color.parseColor("#d2b570"), "Fool&#8217;s Gold", "3-11-5"));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#d2b570"), "Fool's Gold", "3-11-5"));
         secondaryColors.add(new SecondaryColor(Color.parseColor("#d8c197"), "French Mustard", "3-9-3"));
         secondaryColors.add(new SecondaryColor(Color.parseColor("#debf99"), "Sunstraw", "3-8-3"));
         secondaryColors.add(new SecondaryColor(Color.parseColor("#cdb364"), "Mountain Lion", "3-12-5"));
@@ -709,7 +709,7 @@ public class ColorsFragment extends Fragment {
         secondaryColors.add(new SecondaryColor(Color.parseColor("#d0ac6e"), "Midas Touch", "3-9-4"));
         secondaryColors.add(new SecondaryColor(Color.parseColor("#c99f6d"), "Organza", "3-8-4"));
         secondaryColors.add(new SecondaryColor(Color.parseColor("#c79b57"), "Honey Butter", "3-9-5"));
-        secondaryColors.add(new SecondaryColor(Color.parseColor("#be8e46"), "Lion&#8217;s Den", "3-9-6"));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#be8e46"), "Lion's Den", "3-9-6"));
         secondaryColors.add(new SecondaryColor(Color.parseColor("#a98437"), "Granary Gold", "3-12-7"));
         secondaryColors.add(new SecondaryColor(Color.parseColor("#c08949"), "Mystic Maize", "3-9-7"));
         secondaryColors.add(new SecondaryColor(Color.parseColor("#c28b55"), "Copper Canyon", "3-8-5"));
@@ -721,7 +721,7 @@ public class ColorsFragment extends Fragment {
         secondaryColors.add(new SecondaryColor(Color.parseColor("#a85f26"), "Wyoming", "3-6-7"));
         secondaryColors.add(new SecondaryColor(Color.parseColor("#ba6f44"), "Arizona Sunset", "3-6-6"));
 
-        allColorsList.add(new PrimaryColor(Color.parseColor("#a46e47"), "Brown", secondaryColors));
+        allColorsList.add(new PrimaryColor(Color.parseColor("#a85f26"), "Wyoming", secondaryColors));
 
         selectedColor = allColorsList.get(0);
     }
@@ -729,6 +729,7 @@ public class ColorsFragment extends Fragment {
     private void showColorsTray() {
         hideWallsTray();
         colorsTrayVisible = true;
+        relativeLayoutColorsTrayContainer.setVisibility(View.VISIBLE);
         relativeLayoutColorsTrayContainer.bringToFront();
         showColorsTray(0);
     }
@@ -749,6 +750,7 @@ public class ColorsFragment extends Fragment {
 
     private void hideColorsTray() {
         colorsTrayVisible = false;
+        relativeLayoutColorsTrayContainer.setVisibility(View.GONE);
         activeColorsList.clear();
         colorsRecyclerAdapter.notifyDataSetChanged();
         textViewShadesOfColor.setText("");

@@ -765,8 +765,6 @@ public class ColorsFragment extends Fragment {
         secondaryColors.add(new SecondaryColor(Color.parseColor("#ba6f44"), "Arizona Sunset", "3-6-6"));
 
         allColorsList.add(new PrimaryColor(Color.parseColor("#a85f26"), "Wyoming", "Brown", secondaryColors));
-
-        selectedColor = allColorsList.get(0);
     }
 
     private void showColorsTray() {
@@ -1279,7 +1277,7 @@ public class ColorsFragment extends Fragment {
         addRoomImage(room.getTransparentImageRes(), room.getName());
 
         textViewChooseWall.setText(R.string.select_a_wall);
-        selectedColor = allColorsList.get(0);
+        selectedColor = null;
         textViewSelectedColor.setText("");
         textViewShadesOfColor.setText("");
         textViewColorsOfProduct.setText("");
@@ -1305,9 +1303,11 @@ public class ColorsFragment extends Fragment {
         }
     };
 
-    public static void setSelectedRoom(Room room) {
+    public static void setSelectedRoom(Room room, boolean def) {
         if (latestInstance != null) {
-            latestInstance.setRoom(room);
+            if (!def || latestInstance.room == null) {
+                latestInstance.setRoom(room);
+            }
         }
     }
 

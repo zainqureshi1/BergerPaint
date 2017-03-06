@@ -119,8 +119,37 @@ public class RoomsFragment extends Fragment {
 
         walls = new ArrayList<>();
         walls.add(new Wall("Front Wall", R.drawable.room_05_01, Color.parseColor("#D59F57")));
-        walls.add(new Wall("Roof", R.drawable.room_05_02, Color.parseColor("#9C7C71")));
+        walls.add(new Wall("Ceiling", R.drawable.room_05_02, Color.parseColor("#9C7C71")));
         arrayListRooms.add(new Room("Small Bedroom", R.drawable.room_05, R.drawable.room_05_00, walls));
+
+        walls = new ArrayList<>();
+        walls.add(new Wall("Front Wall", R.drawable.room_06_01, Color.parseColor("#6B333F")));
+        walls.add(new Wall("Side Wall", R.drawable.room_06_02, Color.parseColor("#6B333F")));
+        walls.add(new Wall("Edge Walls", R.drawable.room_06_03, Color.parseColor("#DDD6C6")));
+        walls.add(new Wall("Ceiling", R.drawable.room_06_04, Color.parseColor("#DBD9BC")));
+        arrayListRooms.add(new Room("Bedroom", R.drawable.room_06, R.drawable.room_06_00, walls));
+
+        walls = new ArrayList<>();
+        walls.add(new Wall("Front Wall", R.drawable.room_07_01, Color.parseColor("#2D3B67")));
+        walls.add(new Wall("Left Wall", R.drawable.room_07_02, Color.parseColor("#006B9C")));
+        walls.add(new Wall("Right Wall", R.drawable.room_07_03, Color.parseColor("#006B9C")));
+        walls.add(new Wall("Ceiling", R.drawable.room_07_04, Color.parseColor("#C1C1C2")));
+        arrayListRooms.add(new Room("Kids Room", R.drawable.room_07, R.drawable.room_07_00, walls));
+
+        walls = new ArrayList<>();
+        walls.add(new Wall("Front Wall", R.drawable.room_08_01, Color.parseColor("#516563")));
+        walls.add(new Wall("Left Wall", R.drawable.room_08_02, Color.parseColor("#A8767D")));
+        arrayListRooms.add(new Room("Living Room", R.drawable.room_08, R.drawable.room_08_00, walls));
+
+        walls = new ArrayList<>();
+        walls.add(new Wall("Front Wall", R.drawable.room_09_01, Color.parseColor("#CCB99C")));
+        arrayListRooms.add(new Room("Bungalow Exterior", R.drawable.room_09, R.drawable.room_09_00, walls));
+
+        walls = new ArrayList<>();
+        walls.add(new Wall("Front Wall", R.drawable.room_10_01, Color.parseColor("#E1DECB")));
+        walls.add(new Wall("Window Frames", R.drawable.room_10_02, Color.parseColor("#015C5B")));
+        walls.add(new Wall("Roof", R.drawable.room_10_03, Color.parseColor("#015C5B")));
+        arrayListRooms.add(new Room("House Exterior", R.drawable.room_10, R.drawable.room_10_00, walls));
 
         roomRecyclerAdapter.notifyDataSetChanged();
 

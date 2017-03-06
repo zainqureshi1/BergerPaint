@@ -94,15 +94,15 @@ public class MainActivity extends FragmentActivity implements OnFragmentInteract
                 viewPager.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        ColorsFragment.setSelectedRoom(room);
+                        ColorsFragment.setSelectedRoom(room, true);
                     }
                 }, 1000);
                 break;
             case ROOM_SELECTED:
-                ColorsFragment.setSelectedRoom((Room) obj);
+                ColorsFragment.setSelectedRoom((Room) obj, false);
                 break;
             case ROOMS_NEXT_CLICK:
-                ColorsFragment.setSelectedRoom((Room) obj);
+                ColorsFragment.setSelectedRoom((Room) obj, false);
                 viewPager.setCurrentItem(1);
                 break;
             case COLOR_SELECTED:

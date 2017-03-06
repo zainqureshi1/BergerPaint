@@ -1,7 +1,5 @@
 package com.e2esp.bergerpaint.models;
 
-import android.content.Context;
-
 /**
  * Created by Zain on 1/31/2017.
  */

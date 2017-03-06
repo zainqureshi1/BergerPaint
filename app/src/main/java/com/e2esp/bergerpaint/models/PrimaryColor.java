@@ -8,40 +8,20 @@ import java.util.ArrayList;
 
 public class PrimaryColor extends SecondaryColor {
 
+    private String shade;
     private ArrayList<SecondaryColor> secondaryColors;
     private boolean trayOpen;
 
-    public PrimaryColor(int color, String name, ArrayList<SecondaryColor> secondaryColors) {
+    public PrimaryColor(int color, String name, String shade, ArrayList<SecondaryColor> secondaryColors) {
         super(color, name, "");
+        this.shade = shade;
         this.secondaryColors = secondaryColors;
         this.trayOpen = false;
     }
 
-    /*public PrimaryColor(int color, String name, boolean autoGenerateSecondaryColors) {
-        super(color, name, "");
-        this.secondaryColors = new ArrayList<>();
-        if (autoGenerateSecondaryColors) {
-            String hex = Integer.toHexString(color);
-            String aHex = hex.substring(0, 2);
-            int r = Integer.parseInt(hex.substring(2, 4),16);
-            int g = Integer.parseInt(hex.substring(4, 6),16);
-            int b = Integer.parseInt(hex.substring(6, 8),16);
-            for (int i = 1; i <= 10; i++) {
-                int r1 = r == 0 ? (r + i * 10) : r == 255 ? (r - i * 10) : r;
-                int g1 = g == 0 ? (g + i * 10) : g == 255 ? (g - i * 10) : g;
-                int b1 = b == 0 ? (b + i * 10) : b == 255 ? (b - i * 10) : b;
-                String rHex = Integer.toHexString(r1);
-                if (rHex.length() < 2) rHex = 0 + rHex;
-                String gHex = Integer.toHexString(g1);
-                if (gHex.length() < 2) gHex = 0 + gHex;
-                String bHex = Integer.toHexString(b1);
-                if (bHex.length() < 2) bHex = 0 + bHex;
-                String hex1 = aHex + rHex + gHex + bHex;
-                this.secondaryColors.add(new SecondaryColor((int) Long.parseLong(hex1, 16), name + " " + i));
-            }
-        }
-        this.trayOpen = false;
-    }*/
+    public String getShade() {
+        return shade;
+    }
 
     public ArrayList<SecondaryColor> getSecondaryColors() {
         return secondaryColors;
@@ -56,7 +36,7 @@ public class PrimaryColor extends SecondaryColor {
     }
 
     public PrimaryColor clone() {
-        return new PrimaryColor(getColor(), getName(), new ArrayList<>(secondaryColors));
+        return new PrimaryColor(getColor(), getName(), getShade(), new ArrayList<>(secondaryColors));
     }
 
 }

@@ -6,32 +6,33 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.e2esp.bergerpaint.R;
-import com.e2esp.bergerpaint.interfaces.OnTraysColorClickListener;
-import com.e2esp.bergerpaint.models.PrimaryColor;
+import com.e2esp.bergerpaint.interfaces.OnTraysProductClickListener;
+import com.e2esp.bergerpaint.models.ProductColor;
 
 import java.util.ArrayList;
 
 /**
- * Created by Zain on 1/31/2017.
+ * Created by Zain on 3/6/2017.
  */
 
 public class ProductsTrayRecyclerAdapter extends RecyclerView.Adapter<ProductsTrayRecyclerAdapter.ColorsViewHolder> {
 
     private Context context;
-    private ArrayList<PrimaryColor> colorsList;
-    private OnTraysColorClickListener onColorClickListener;
+    private ArrayList<ProductColor> colorsList;
+    private OnTraysProductClickListener onProductClickListener;
 
-    public ProductsTrayRecyclerAdapter(Context context, ArrayList<PrimaryColor> colorsList, OnTraysColorClickListener onColorClickListener) {
+    public ProductsTrayRecyclerAdapter(Context context, ArrayList<ProductColor> colorsList, OnTraysProductClickListener onProductClickListener) {
         this.context = context;
         this.colorsList = colorsList;
-        this.onColorClickListener = onColorClickListener;
+        this.onProductClickListener = onProductClickListener;
     }
 
     @Override
     public ColorsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.tray_item_color_layout, parent, false);
+        View view = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.tray_item_product_layout, parent, false);
         return new ColorsViewHolder(view);
     }
 
@@ -47,19 +48,22 @@ public class ProductsTrayRecyclerAdapter extends RecyclerView.Adapter<ProductsTr
 
     public class ColorsViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView imageViewPrimaryColor;
+        private ImageView imageViewProductIcon;
+        private TextView textViewProductName;
 
         public ColorsViewHolder(View itemView) {
             super(itemView);
-            imageViewPrimaryColor = (ImageView) itemView.findViewById(R.id.imageViewPrimaryColor);
+            imageViewProductIcon = (ImageView) itemView.findViewById(R.id.imageViewProductIcon);
+            textViewProductName = (TextView) itemView.findViewById(R.id.textViewProductName);
         }
 
-        public void bindView(final PrimaryColor primaryColor) {
-            imageViewPrimaryColor.setColorFilter(primaryColor.getColor());
-            imageViewPrimaryColor.setOnClickListener(new View.OnClickListener() {
+        public void bindView(final ProductColor productColor) {
+            imageViewProductIcon.setImageResource(productColor.getImageRes());
+            textViewProductName.setText(productColor.getName());
+            imageViewProductIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onColorClickListener.onPrimaryColorClick(primaryColor);
+                    onProductClickListener.onProductColorClick(productColor);
                 }
             });
         }

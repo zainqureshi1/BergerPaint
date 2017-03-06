@@ -13,10 +13,12 @@
     <string name="choose_a_room">Choose a Room</string>
     <string name="next_select_colors">Next: Select Colors >></string>
 
-    <string name="choose_a_wall">Choose a Wall</string>
-    <string name="choose_a_color">Choose a Color</string>
+    <string name="select_a_wall">Select a Wall</string>
+    <string name="colors_symphony">Colors Symphony</string>
+    <string name="product_colors">Product Colors</string>
 
     <string name="shades_of_color">Shades of %s<!--Color--></string>
+    <string name="colors_of_product">Colors of %s<!--Product--></string>
 
     <string name="next_select_product">Next: Select Product >></string>
 

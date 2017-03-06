@@ -18,12 +18,15 @@ import android.widget.RelativeLayout;
 
 import com.e2esp.bergerpaint.R;
 import com.e2esp.bergerpaint.adapters.ColorsTrayRecyclerAdapter;
+import com.e2esp.bergerpaint.adapters.ProductsTrayRecyclerAdapter;
 import com.e2esp.bergerpaint.adapters.WallsTrayRecyclerAdapter;
 import com.e2esp.bergerpaint.interfaces.OnFragmentInteractionListener;
 import com.e2esp.bergerpaint.interfaces.OnTraysColorClickListener;
+import com.e2esp.bergerpaint.interfaces.OnTraysProductClickListener;
 import com.e2esp.bergerpaint.interfaces.OnTraysWallClickListener;
 import com.e2esp.bergerpaint.interfaces.OnWallImageTouchListener;
 import com.e2esp.bergerpaint.models.PrimaryColor;
+import com.e2esp.bergerpaint.models.ProductColor;
 import com.e2esp.bergerpaint.models.Room;
 import com.e2esp.bergerpaint.models.SecondaryColor;
 import com.e2esp.bergerpaint.models.Wall;
@@ -35,12 +38,17 @@ public class ColorsFragment extends Fragment {
     private static ColorsFragment latestInstance;
 
     private AppCompatTextView textViewChooseWall;
-    private AppCompatTextView textViewChooseColor;
+    private AppCompatTextView textViewSymphonyColor;
+    private AppCompatTextView textViewProductColor;
     private AppCompatTextView textViewShadesOfColor;
+    private AppCompatTextView textViewColorsOfProduct;
+    private AppCompatTextView textViewSelectedColor;
 
     private RelativeLayout relativeLayoutPictureContainer;
     private RelativeLayout relativeLayoutColorsTrayContainer;
+    private RelativeLayout relativeLayoutProductsTrayContainer;
     private LinearLayout linearLayoutSecondaryColorsTrayContainer;
+    private LinearLayout linearLayoutProductColorsTrayContainer;
 
     private RecyclerView recyclerViewWallsTray;
     private ArrayList<Wall> wallsList;
@@ -51,6 +59,11 @@ public class ColorsFragment extends Fragment {
     private ArrayList<PrimaryColor> activeColorsList;
     private ColorsTrayRecyclerAdapter colorsRecyclerAdapter;
 
+    private RecyclerView recyclerViewProductsTray;
+    private ArrayList<ProductColor> allProductColorsList;
+    private ArrayList<ProductColor> activeProductColorsList;
+    private ProductsTrayRecyclerAdapter productsRecyclerAdapter;
+
     private Room room;
 
     private ImageView selectedWallImage;
@@ -60,6 +73,7 @@ public class ColorsFragment extends Fragment {
 
     private boolean wallsTrayVisible;
     private boolean colorsTrayVisible;
+    private boolean productsTrayVisible;
 
     public ColorsFragment() {
         // Required empty public constructor
@@ -94,6 +108,7 @@ public class ColorsFragment extends Fragment {
 
         setupViews(view);
         setupColorsTray();
+        setupProductsTray();
 
         return view;
     }
@@ -110,8 +125,8 @@ public class ColorsFragment extends Fragment {
                 }
             }
         });
-        textViewChooseColor = (AppCompatTextView) view.findViewById(R.id.textViewChooseColor);
-        textViewChooseColor.setOnClickListener(new View.OnClickListener() {
+        textViewSymphonyColor = (AppCompatTextView) view.findViewById(R.id.textViewSymphonyColors);
+        textViewSymphonyColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (colorsTrayVisible) {
@@ -121,12 +136,27 @@ public class ColorsFragment extends Fragment {
                 }
             }
         });
+        textViewProductColor = (AppCompatTextView) view.findViewById(R.id.textViewProductColors);
+        textViewProductColor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (productsTrayVisible) {
+                    hideProductsTray();
+                } else {
+                    showProductsTray();
+                }
+            }
+        });
 
         textViewShadesOfColor = (AppCompatTextView) view.findViewById(R.id.textViewShadesOfColor);
+        textViewColorsOfProduct = (AppCompatTextView) view.findViewById(R.id.textViewColorsOfProduct);
+        textViewSelectedColor = (AppCompatTextView) view.findViewById(R.id.textViewSelectedColor);
 
         relativeLayoutPictureContainer = (RelativeLayout) view.findViewById(R.id.relativeLayoutPictureContainer);
         relativeLayoutColorsTrayContainer = (RelativeLayout) view.findViewById(R.id.relativeLayoutColorsTrayContainer);
+        relativeLayoutProductsTrayContainer = (RelativeLayout) view.findViewById(R.id.relativeLayoutProductsTrayContainer);
         linearLayoutSecondaryColorsTrayContainer = (LinearLayout) view.findViewById(R.id.linearLayoutSecondaryColorsTrayContainer);
+        linearLayoutProductColorsTrayContainer = (LinearLayout) view.findViewById(R.id.linearLayoutProductColorsTrayContainer);
 
         recyclerViewWallsTray = (RecyclerView) view.findViewById(R.id.recyclerViewWallsTray);
         wallsList = new ArrayList<>();
@@ -151,6 +181,18 @@ public class ColorsFragment extends Fragment {
         recyclerViewColorsTray.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerViewColorsTray.setAdapter(colorsRecyclerAdapter);
 
+        recyclerViewProductsTray = (RecyclerView) view.findViewById(R.id.recyclerViewProductsTray);
+        allProductColorsList = new ArrayList<>();
+        activeProductColorsList = new ArrayList<>();
+        productsRecyclerAdapter = new ProductsTrayRecyclerAdapter(getContext(), activeProductColorsList, new OnTraysProductClickListener() {
+            @Override
+            public void onProductColorClick(ProductColor color) {
+                productColorClicked(color);
+            }
+        });
+        recyclerViewProductsTray.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        recyclerViewProductsTray.setAdapter(productsRecyclerAdapter);
+
         AppCompatTextView textViewNext = (AppCompatTextView) view.findViewById(R.id.textViewNext);
         textViewNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,6 +211,7 @@ public class ColorsFragment extends Fragment {
             return;
         }
         hideColorsTray();
+        hideProductsTray();
         wallsTrayVisible = true;
         recyclerViewWallsTray.bringToFront();
         showWallsTray(0);
@@ -252,7 +295,7 @@ public class ColorsFragment extends Fragment {
         secondaryColors.add(new SecondaryColor(Color.parseColor("#e0ead7"), "Eternal Bliss", "3-20-2"));
         secondaryColors.add(new SecondaryColor(Color.parseColor("#d6eacf"), "Cool Comfort", "2-21-2"));
 
-        allColorsList.add(new PrimaryColor(Color.parseColor("#e9e8e9"), "Calm Spirit", secondaryColors));
+        allColorsList.add(new PrimaryColor(Color.parseColor("#e9e8e9"), "Calm Spirit", "White", secondaryColors));
 
         // Shades of Yellow
         secondaryColors = new ArrayList<>();
@@ -270,7 +313,7 @@ public class ColorsFragment extends Fragment {
         secondaryColors.add(new SecondaryColor(Color.parseColor("#caa800"), "Yangtze", "2-15-7"));
         secondaryColors.add(new SecondaryColor(Color.parseColor("#fabd00"), "Gold Finger", "1-12-7"));
 
-        allColorsList.add(new PrimaryColor(Color.parseColor("#fabd00"), "Gold Finger", secondaryColors));
+        allColorsList.add(new PrimaryColor(Color.parseColor("#fabd00"), "Gold Finger", "Yellow", secondaryColors));
 
         // Shades of Red
         secondaryColors = new ArrayList<>();
@@ -333,7 +376,7 @@ public class ColorsFragment extends Fragment {
         secondaryColors.add(new SecondaryColor(Color.parseColor("#aa5a47"), "Coral Bead", "3-4-6"));
         secondaryColors.add(new SecondaryColor(Color.parseColor("#9a452a"), "Apache", "3-4-7"));
 
-        allColorsList.add(new PrimaryColor(Color.parseColor("#9d2e30"), "Blaze", secondaryColors));
+        allColorsList.add(new PrimaryColor(Color.parseColor("#9d2e30"), "Blaze", "Red", secondaryColors));
 
         // Shades of Blue
         secondaryColors = new ArrayList<>();
@@ -434,7 +477,7 @@ public class ColorsFragment extends Fragment {
         secondaryColors.add(new SecondaryColor(Color.parseColor("#004f75"), "Victor Harbour", "3-33-7"));
         secondaryColors.add(new SecondaryColor(Color.parseColor("#273a7c"), "Lobelia", "2-37-7"));
 
-        allColorsList.add(new PrimaryColor(Color.parseColor("#004a75"), "Blue Vision", secondaryColors));
+        allColorsList.add(new PrimaryColor(Color.parseColor("#004a75"), "Blue Vision", "Blue", secondaryColors));
 
         // Shades of Orange
         secondaryColors = new ArrayList<>();
@@ -470,7 +513,7 @@ public class ColorsFragment extends Fragment {
         secondaryColors.add(new SecondaryColor(Color.parseColor("#f4e1ce"), "Peach Pinch", "2-6-2"));
         secondaryColors.add(new SecondaryColor(Color.parseColor("#ffea96"), "Buttercup Bouquet", "1-12-3"));
 
-        allColorsList.add(new PrimaryColor(Color.parseColor("#e85d3a"), "Orange Harvest", secondaryColors));
+        allColorsList.add(new PrimaryColor(Color.parseColor("#e85d3a"), "Orange Harvest", "Orange", secondaryColors));
 
         // Shades of Green
         secondaryColors = new ArrayList<>();
@@ -583,7 +626,7 @@ public class ColorsFragment extends Fragment {
         secondaryColors.add(new SecondaryColor(Color.parseColor("#008e63"), "Willawong", "2-25-6"));
         secondaryColors.add(new SecondaryColor(Color.parseColor("#006240"), "Noonday Tide", "3-26-7"));
 
-        allColorsList.add(new PrimaryColor(Color.parseColor("#007837"), "Tropic Green", secondaryColors));
+        allColorsList.add(new PrimaryColor(Color.parseColor("#007837"), "Tropic Green", "Green", secondaryColors));
 
         // Shades of Violet
         secondaryColors = new ArrayList<>();
@@ -661,7 +704,7 @@ public class ColorsFragment extends Fragment {
         secondaryColors.add(new SecondaryColor(Color.parseColor("#981c53"), "Scarlet O'Hara", "2-46-7A"));
         secondaryColors.add(new SecondaryColor(Color.parseColor("#913168"), "Razzle Dazzle", "2-44-7"));
 
-        allColorsList.add(new PrimaryColor(Color.parseColor("#ab436f"), "Pink Interlude", secondaryColors));
+        allColorsList.add(new PrimaryColor(Color.parseColor("#ab436f"), "Pink Interlude", "Violet", secondaryColors));
 
         // Shades of Brown
         secondaryColors = new ArrayList<>();
@@ -721,12 +764,13 @@ public class ColorsFragment extends Fragment {
         secondaryColors.add(new SecondaryColor(Color.parseColor("#a85f26"), "Wyoming", "3-6-7"));
         secondaryColors.add(new SecondaryColor(Color.parseColor("#ba6f44"), "Arizona Sunset", "3-6-6"));
 
-        allColorsList.add(new PrimaryColor(Color.parseColor("#a85f26"), "Wyoming", secondaryColors));
+        allColorsList.add(new PrimaryColor(Color.parseColor("#a85f26"), "Wyoming", "Brown", secondaryColors));
 
         selectedColor = allColorsList.get(0);
     }
 
     private void showColorsTray() {
+        hideProductsTray();
         hideWallsTray();
         colorsTrayVisible = true;
         relativeLayoutColorsTrayContainer.setVisibility(View.VISIBLE);
@@ -758,8 +802,311 @@ public class ColorsFragment extends Fragment {
         relativeLayoutPictureContainer.bringToFront();
     }
 
+    private void setupProductsTray() {
+        ArrayList<SecondaryColor> secondaryColors;
+
+        // Elegance
+        secondaryColors = new ArrayList<>();
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#79b7aa"), "E-Green Heaven", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#7f4243"), "E-Tile Red", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#83804d"), "E-Leaf Green", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#99675f"), "E-Rust", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#68554e"), "E-Choclate", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#a68551"), "E-Gold Mist", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#3d6098"), "E-Blue Street", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#dba07f"), "E-Peach Country", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#b5d3e9"), "E-Celestial", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#f4f7f6"), "E-white", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#f7f3ea"), "E-off.White", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#e6e5e3"), "E-Lavender White", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#9db9dc"), "E-Ocean Blue", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#ecb7a5"), "E-Shophistication", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#e0dcd3"), "E-Ash White", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#deb8af"), "E-Candy Floss", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#cdcadf"), "E-Ochard Lane", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#8877a6"), "E-Elegance", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#e8a3a9"), "E-Bliss", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#ebaeb6"), "E-Rose Bouquet", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#f6eace"), "E-off.White Plus", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#e7dbca"), "Ivory Silk", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#e5ccca"), "E-Summer Pink", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#dbd5e3"), "E-Lace", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#e0c8d8"), "E-Delicate Pink", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#f5dd94"), "E-Ribon Yellow", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#dac9b2"), "E-Cockelshell", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#e7e1e1"), "E-Pink Voilet", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#e9cfbc"), "E-Peach Goddess", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#dfb9cf"), "E-Swiss Miss", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#d9dadc"), "E-Pearl Glow", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#a2c8cf"), "E-Lake Blue", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#e98e53"), "E-Fresh Orange", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#dac5af"), "E-Sand Dune", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#d2d67e"), "E-Spring Blossom", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#b5c1c2"), "E-Grey Blue", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#8995a3"), "E-Thunder Grey", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#bb70a4"), "E-Carnival Pink", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#fac166"), "E-Mango Mood", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#c1745a"), "E-Flery Volcano", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#dbe4ad"), "Fresh Sprout", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#c06258"), "E-Oriental Copper", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#c5dec0"), "E-Mint Leaf", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#844B5E"), "Vintage Coat.", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#A0A19C"), "Dove Grey*", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#D3D1CB"), "Pearl", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#F3E2D7"), "Rose Petal*", ""));
+
+        allProductColorsList.add(new ProductColor("Elegance", R.drawable.berger_elegance_matt_emulsion, secondaryColors));
+
+        // Weather Coat
+        secondaryColors = new ArrayList<>();
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#3a5968"), "Noble Blue", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#E9E1D5"), "Almond", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#DDDAD0"), "Ash whitee", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#C8AF8F"), "Beigee", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#646361"), "Charcoal", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#D8C6B3"), "Fawn", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#A0A19D"), "Goose Wing", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#DAD0BB"), "Khaki", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#7D7B4E"), "Leaf Green", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#408D8C"), "Nato Green", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#F1E7D1"), "Off White", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#CDC9BE"), "Port Land", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#6A6FA3"), "Purple", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#59665C"), "Rado Green", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#754842"), "Red Oxide", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#A9675E"), "Roof Tile", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#CDBBA6"), "Sand Stone", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#ACAEAC"), "Sea Mist", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#C6C3BC"), "Silk Grey", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#C5C7C4"), "Smoke Grey", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#E0CFB3"), "Sugar Cane", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#E4BEAB"), "Sweet Jewel", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#C5B2A9"), "Tea Rose", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#B9846E"), "Terra Cotta", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#AD615C"), "Tile Red", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#EFF1EF"), "White", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#AE6144"), "Multani Tile", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#35544D"), "Lake Green", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#D56E78"), "Pindi Pink", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#E1C757"), "Lemon", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#DC884F"), "Fresh Orange", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#EED9C4"), "Sea Shell", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#F0E2A5"), "Banana", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#EFDEDF"), "Coral Reef", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#91D2D4"), "Sea Spray", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#39A9A9"), "Hawks Bay", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#C4D4E0"), "Pool Side", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#C6C3BB"), "Sky Grey", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#D8B794"), "Cameo", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#E6D4BF"), "Autumn Stone", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#E0CFB5"), "Magnolia.", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#C5C1A9"), "Dove Grey", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#BAAF9E"), "Clay", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#9D9584"), "Moorland", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#DAD4B5"), "Silk Stone", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#D5CAB4"), "Hopsack", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#DFCE91"), "Sun Shower", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#E0BB93"), "Desert Dawn", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#D09D83"), "Choco Malt", ""));
+
+        allProductColorsList.add(new ProductColor("Weather Coat", R.drawable.berger_weathercoat_acrylic_exterior_finish, secondaryColors));
+
+        // Easy Clean
+        secondaryColors = new ArrayList<>();
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#936359"), "Copper", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#E7E2DB"), "Almond White", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#BBD4D6"), "Aqua Blue", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#C4D1DA"), "Charisma", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#E3D8C9"), "Cockle Shell", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#E7BCB6"), "Gipsy Pink", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#E1DFDC"), "Lavender White.", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#EFEBD8"), "Off White.", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#E4E7D6"), "Pistachio White", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#93905A"), "Spring Leaf", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#B7C0C2"), "Steel Grey", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#EFE2E5"), "Teenage Pink", ""));
+
+        allProductColorsList.add(new ProductColor("Easy Clean", R.drawable.berger_easy_clean_emulsion, secondaryColors));
+
+        // Silk
+        secondaryColors = new ArrayList<>();
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#FFFFEB"), "Cotton Ball", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#FBEDD3"), "Coast White", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#FFF5E8"), "Candle Wax", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#F6ECE0"), "Antique White", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#F2E6D8"), "Desert Beige", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#DAA68B"), "Coppertone", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#DFF0E1"), "Crisp Apple", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#D1E3C8"), "Precious Green", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#EDF0AE"), "Fresh Day", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#80784F"), "Hollywood Hill", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#2E6F72"), "Mystic River", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#CFC8C3"), "Heron Grey", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#EBE4EE"), "Igloo", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#63AFE1"), "Blue Bell", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#7681BF"), "Arabian Nights", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#F3EBF4"), "French Poodle", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#E5D1E6"), "Newborn", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#9876A9"), "Gemini Twin", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#FBF7C0"), "Lemon Sorbet", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#FEDA73"), "Banana Smoothie", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#FCAD32"), "Sunshine", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#ED6D40"), "Moroccan", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#D08970"), "Cumin Seasoning", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#A55E52"), "Havana", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#EEE8F3"), "Jasmine Scent", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#F9CBDF"), "Baby Girl", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#C18FA3"), "Pashmina", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#94565F"), "Vintage Coat", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#C34E58"), "Naughty Pink", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#DD4748"), "Strawberry Jam", ""));
+
+        allProductColorsList.add(new ProductColor("Silk Emulsion", R.drawable.berger_silk_emulsion, secondaryColors));
+
+        // All Rounder
+        secondaryColors = new ArrayList<>();
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#FFFAF0"), "Off white Plus", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#FFF3E7"), "D/R off White", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#EFE3D9"), "Satin Magnolia", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#F3E7DE"), "Reflection", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#EBE4D4"), "Kitten White", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#E7E3E8"), "Lavender white", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#DFE0D2"), "Ash White", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#E4E0D2"), "Halo", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#E8DFD3"), "Orion", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#E3CDBD"), "Beige", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#FAEBD7"), "D/R Rose White", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#E9C49C"), "Peach Silk", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#DFB48F"), "Classic Ivory", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#F5C7A9"), "Soft Peach", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#FABEAF"), "Terracotta Sand", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#F5EADB"), "Chandni", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#FFF0E1"), "Country Rose", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#DBC4D9"), "D/R Opal Lilac", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#CDE7F4"), "New Angel Blue", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#CCDBF1"), "Torres Blue", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#FCDFEB"), "Angel", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#E0F1EA"), "New Sherbet", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#F5FFDC"), "New Tropical Lime", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#E4EEBD"), "Light Lime", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#BDDFB7"), "Misty Jade", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#84BD6F"), "Fresh Lime", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#497787"), "Peacock Blue", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#97A4D3"), "First Dawn", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#585191"), "Electric Blue", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#BA9DC5"), "Desire", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#734F63"), "Mixing Maroon", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#D95E80"), "Carnival Pink", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#FAC891"), "Stunning Gold", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#F9A56F"), "Orange Tropic", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#F36F5A"), "Natural Paprika", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#F26550"), "Fiery Volcano", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#D35158"), "Oriental copper", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#D53B46"), "Bell Pepper", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#E0D9C7"), "Antique White.", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#E1D1C3"), "Pale Mushroom", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#6B628C"), "Gemini Twin.", ""));
+
+        allProductColorsList.add(new ProductColor("All Rounder", R.drawable.berger_allrounder_matt_enamel, secondaryColors));
+
+        // SPD
+        secondaryColors = new ArrayList<>();
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#93C681"), "Apple Green", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#DBDAD0"), "Ash White", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#E8E1D7"), "Badami", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#D4CBB7"), "Bone", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#C8D3DB"), "Charisma.", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#BADBD7"), "Cool Blue", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#CED3CF"), "Dove Grey.", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#F6F0E7"), "Horizon White", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#EFDAAF"), "Ivory", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#DFE8D4"), "Kunhar", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#E1DFDA"), "Lavender White", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#B6CF8D"), "Light Green", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#C5A986"), "Light Mushroom", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#E7DBC8"), "Magnolia", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#F3EAD2"), "Off White", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#EED39E"), "Pale Cream", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#D5E8CD"), "Pastel Green", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#F3E2D8"), "Rose Petal", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#F1CDB9"), "Rose Pink", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#C7B6A1"), "Sand Stone.", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#B9BCB6"), "Shell Grey", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#F0C4C0"), "Summer Pink", ""));
+
+        allProductColorsList.add(new ProductColor("SPD", R.drawable.berger_new_spd_smooth_emulsion, secondaryColors));
+
+        // VIP Super Gloss Enamel
+        secondaryColors = new ArrayList<>();
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#D2CFC0"), "Ash grey.", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#C0DAD8"), "Bali Blue", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#CCB195"), "Beige.", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#5FA8C8"), "Berger Blue", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#615245"), "Berger Brown", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#ECD4A6"), "Bone White.", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#CCA06B"), "Butter Scotch", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#EECDC2"), "Candy Pink.", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#4B4542"), "Conker", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#1F7AAF"), "Cool Blue.", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#936358"), "Copper.", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#B9D6C1"), "Crayon Green", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#6D7370"), "Dark Bittle", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#82C19C"), "Delta Green", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#90B589"), "Firoza", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#8CA448"), "Forest Green", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#D3D1D1"), "Glazed Violet", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#966343"), "Golden Brown", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#E9D1A7"), "Honey Cream", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#8D887B"), "Light Grey", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#5BBFA9"), "Ocean Turqoise", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#E9DEC7"), "Off White*", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#8A3A3D"), "P.o. Red", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#714742"), "Red Oxide.", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#2B6A4B"), "Signal Green", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#9A3C3B"), "Signal Red", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#999D92"), "Slate Grey", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#7E8B91"), "Smoke Grey", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#F4EED5"), "Vanila Ice", ""));
+        secondaryColors.add(new SecondaryColor(Color.parseColor("#E6ECF2"), "White", ""));
+
+        allProductColorsList.add(new ProductColor("VIP Super Gloss", R.drawable.berger_vip_super_gloss_enamel, secondaryColors));
+    }
+
+    private void showProductsTray() {
+        hideColorsTray();
+        hideWallsTray();
+        productsTrayVisible = true;
+        relativeLayoutProductsTrayContainer.setVisibility(View.VISIBLE);
+        relativeLayoutProductsTrayContainer.bringToFront();
+        showProductsTray(0);
+    }
+
+    private void showProductsTray(final int iteration) {
+        if (iteration >= allProductColorsList.size() || !productsTrayVisible) {
+            return;
+        }
+        activeProductColorsList.add(allProductColorsList.get(iteration).clone());
+        productsRecyclerAdapter.notifyDataSetChanged();
+        recyclerViewProductsTray.post(new Runnable() {
+            @Override
+            public void run() {
+                showProductsTray(iteration + 1);
+            }
+        });
+    }
+
+    private void hideProductsTray() {
+        productsTrayVisible = false;
+        relativeLayoutProductsTrayContainer.setVisibility(View.GONE);
+        activeProductColorsList.clear();
+        productsRecyclerAdapter.notifyDataSetChanged();
+        textViewColorsOfProduct.setText("");
+        linearLayoutProductColorsTrayContainer.removeAllViews();
+        relativeLayoutPictureContainer.bringToFront();
+    }
+
     private void showSecondaryColorsTray(PrimaryColor color) {
-        textViewShadesOfColor.setText(getString(R.string.shades_of_color, color.getName()));
+        textViewShadesOfColor.setText(getString(R.string.shades_of_color, color.getShade()));
         textViewShadesOfColor.setTextColor(color.getColor());
         linearLayoutSecondaryColorsTrayContainer.removeAllViews();
 
@@ -813,6 +1160,60 @@ public class ColorsFragment extends Fragment {
         });
     }
 
+    private void showProductColorsTray(ProductColor product) {
+        textViewColorsOfProduct.setText(getString(R.string.colors_of_product, product.getName()));
+        linearLayoutProductColorsTrayContainer.removeAllViews();
+
+        int containerWidth = ((View) linearLayoutProductColorsTrayContainer.getParent()).getWidth();
+        int colorBoxSize = getResources().getDimensionPixelSize(R.dimen.color_box_size);
+        int colorBoxMargin = getResources().getDimensionPixelSize(R.dimen.margin_small);
+        int boxLimit = (int)((float)(containerWidth + colorBoxMargin) / (float)(colorBoxMargin + colorBoxSize + colorBoxMargin));
+
+        ArrayList<SecondaryColor> secondaryColors = product.getSecondaryColors();
+        LinearLayout linearLayoutColorsTray = null;
+        int totalColors = secondaryColors.size();
+        for (int i = 0; i < totalColors; i++) {
+            final SecondaryColor secondaryColor = secondaryColors.get(totalColors - 1 - i);
+
+            if (i % boxLimit == 0) {
+                linearLayoutColorsTray = new LinearLayout(getContext());
+                linearLayoutColorsTray.setVisibility(View.GONE);
+                linearLayoutColorsTray.setGravity(Gravity.CENTER_HORIZONTAL);
+                LinearLayout.LayoutParams layoutParamsColorsTray = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                linearLayoutProductColorsTrayContainer.addView(linearLayoutColorsTray, layoutParamsColorsTray);
+            }
+
+            ImageView imageView = new ImageView(getContext());
+            imageView.setImageResource(R.drawable.color_box);
+            imageView.setColorFilter(secondaryColor.getColor());
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    secondaryColorClicked(secondaryColor);
+                }
+            });
+
+            LinearLayout.LayoutParams imageViewParams = new LinearLayout.LayoutParams(colorBoxSize, colorBoxSize);
+            imageViewParams.setMargins(colorBoxMargin, colorBoxMargin, colorBoxMargin, colorBoxMargin);
+            linearLayoutColorsTray.addView(imageView, imageViewParams);
+        }
+
+        showProductColors(0);
+    }
+
+    private void showProductColors(final int iteration) {
+        if (iteration >= linearLayoutProductColorsTrayContainer.getChildCount()) {
+            return;
+        }
+        linearLayoutProductColorsTrayContainer.getChildAt(iteration).setVisibility(View.VISIBLE);
+        linearLayoutProductColorsTrayContainer.post(new Runnable() {
+            @Override
+            public void run() {
+                showProductColors(iteration + 1);
+            }
+        });
+    }
+
     private void primaryColorClicked(PrimaryColor color) {
         if (color.isTrayOpen()) {
             secondaryColorClicked(color);
@@ -825,11 +1226,23 @@ public class ColorsFragment extends Fragment {
         showSecondaryColorsTray(color);
     }
 
+    private void productColorClicked(ProductColor color) {
+        if (color.isTrayOpen()) {
+            return;
+        }
+        for (int i = 0; i < activeProductColorsList.size(); i++) {
+            activeProductColorsList.get(i).setTrayOpen(false);
+        }
+        color.setTrayOpen(true);
+        showProductColorsTray(color);
+    }
+
     private void secondaryColorClicked(SecondaryColor color) {
         hideColorsTray();
+        hideProductsTray();
         selectedColor = color;
-        textViewChooseColor.setText(selectedColor.getName());
-        textViewChooseColor.setTextColor(selectedColor.getColor());
+        textViewSelectedColor.setText(selectedColor.getName());
+        textViewSelectedColor.setTextColor(selectedColor.getColor());
         updateWallColor();
 
         onFragmentInteractionListener.onInteraction(OnFragmentInteractionListener.COLOR_SELECTED, selectedColor);
@@ -863,10 +1276,11 @@ public class ColorsFragment extends Fragment {
 
         addRoomImage(room.getTransparentImageRes(), room.getName());
 
-        textViewChooseWall.setText(R.string.choose_a_wall);
+        textViewChooseWall.setText(R.string.select_a_wall);
         selectedColor = allColorsList.get(0);
-        textViewChooseColor.setText(R.string.choose_a_color);
-        textViewChooseColor.setTextColor(selectedColor.getColor());
+        textViewSelectedColor.setText("");
+        textViewShadesOfColor.setText("");
+        textViewColorsOfProduct.setText("");
     }
 
     private ImageView addRoomImage(int resId, String tag) {

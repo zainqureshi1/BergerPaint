@@ -109,7 +109,7 @@ public class ProductsFragment extends Fragment {
     }
 
     public static void setSelectedColor(SecondaryColor color) {
-        if (latestInstance != null) {
+        if (latestInstance != null && color != null) {
             latestInstance.setColor(color);
         }
     }

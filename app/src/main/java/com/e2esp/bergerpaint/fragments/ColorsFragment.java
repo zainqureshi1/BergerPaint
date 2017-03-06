@@ -1245,12 +1245,13 @@ public class ColorsFragment extends Fragment {
         textViewSelectedColor.setTextColor(selectedColor.getColor());
         updateWallColor();
 
-        onFragmentInteractionListener.onInteraction(OnFragmentInteractionListener.COLOR_SELECTED, selectedColor);
+        onFragmentInteractionListener.onInteraction(OnFragmentInteractionListener.COLOR_SELECTED, color);
     }
 
     private void updateWallColor() {
         if (selectedWallImage != null && selectedColor != null) {
             selectedWallImage.setColorFilter(selectedColor.getColor());
+            selectedColor = null;
         }
     }
 
@@ -1267,6 +1268,7 @@ public class ColorsFragment extends Fragment {
             for (int i = 0; i < walls.size(); i++) {
                 Wall wall = walls.get(i);
                 ImageView wallImage = addRoomImage(wall.getImageRes(), wall.getName());
+                wallImage.setColorFilter(wall.getDefaultColor());
                 wall.setWallImage(wallImage, onWallTouchListener);
                 if (i == 0) {
                     selectedWallImage = wallImage;

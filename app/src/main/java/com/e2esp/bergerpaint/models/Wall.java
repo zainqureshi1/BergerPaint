@@ -17,16 +17,18 @@ import com.e2esp.bergerpaint.interfaces.OnWallImageTouchListener;
 public class Wall {
     private String name;
     private int imageRes;
+    private int defaultColor;
 
     private ImageView wallImage;
 
-    public Wall(String name, int imageRes) {
-        this(name, imageRes, null);
+    public Wall(String name, int imageRes, int defaultColor) {
+        this(name, imageRes, defaultColor, null);
     }
 
-    public Wall(String name, int imageRes, ImageView wallImage) {
+    public Wall(String name, int imageRes, int defaultColor, ImageView wallImage) {
         this.name = name;
         this.imageRes = imageRes;
+        this.defaultColor = defaultColor;
         this.wallImage = wallImage;
     }
 
@@ -36,6 +38,10 @@ public class Wall {
 
     public int getImageRes() {
         return imageRes;
+    }
+
+    public int getDefaultColor() {
+        return defaultColor;
     }
 
     public ImageView getWallImage() {
@@ -98,7 +104,7 @@ public class Wall {
     }
 
     public Wall clone() {
-        return new Wall(getName(), getImageRes(), getWallImage());
+        return new Wall(getName(), getImageRes(), getDefaultColor(), getWallImage());
     }
 
 }

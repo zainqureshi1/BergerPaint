@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/BergerPaint.iml" filepath="$PROJECT_DIR$/BergerPaint.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BergerVisualizer.iml" filepath="$PROJECT_DIR$/BergerVisualizer.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

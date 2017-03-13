@@ -1,6 +1,7 @@
 package com.e2esp.bergerpaint.models;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -17,17 +18,20 @@ import com.e2esp.bergerpaint.interfaces.OnWallImageTouchListener;
 public class Wall {
     private String name;
     private int imageRes;
+    private int borderImageRes;
     private int defaultColor;
 
     private ImageView wallImage;
+    private ImageView borderImage;
 
-    public Wall(String name, int imageRes, int defaultColor) {
-        this(name, imageRes, defaultColor, null);
+    public Wall(String name, int imageRes, int borderImageRes, int defaultColor) {
+        this(name, imageRes, borderImageRes, defaultColor, null);
     }
 
-    public Wall(String name, int imageRes, int defaultColor, ImageView wallImage) {
+    public Wall(String name, int imageRes, int borderImageRes, int defaultColor, ImageView wallImage) {
         this.name = name;
         this.imageRes = imageRes;
+        this.borderImageRes = borderImageRes;
         this.defaultColor = defaultColor;
         this.wallImage = wallImage;
     }
@@ -48,8 +52,13 @@ public class Wall {
         return wallImage;
     }
 
-    public void setWallImage(final ImageView wallImage, final OnWallImageTouchListener onWallTouchListener) {
+    public int getBorderImageRes() {
+        return borderImageRes;
+    }
+
+    public void setWallImage(final ImageView wallImage, ImageView borderImage, final OnWallImageTouchListener onWallTouchListener) {
         this.wallImage = wallImage;
+        this.borderImage = borderImage;
         this.wallImage.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent event) {
@@ -103,8 +112,14 @@ public class Wall {
         });
     }
 
+    public void showBorder(boolean show) {
+        if (borderImage != null) {
+            borderImage.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
+        }
+    }
+
     public Wall clone() {
-        return new Wall(getName(), getImageRes(), getDefaultColor(), getWallImage());
+        return new Wall(getName(), getImageRes(), getBorderImageRes(), getDefaultColor(), getWallImage());
     }
 
 }

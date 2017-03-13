@@ -242,7 +242,17 @@ public class ColorsFragment extends Fragment {
         hideWallsTray();
         textViewChooseWall.setText(wall.getName());
         selectedWallImage = wall.getWallImage();
-        updateWallColor();
+        hideWallBorders();
+        wall.showBorder(true);
+    }
+
+    private void hideWallBorders() {
+        if (room != null && room.getWallsList() != null) {
+            ArrayList<Wall> walls = room.getWallsList();
+            for (int i = 0; i < walls.size(); i++) {
+                walls.get(i).showBorder(false);
+            }
+        }
     }
 
     private void setupColorsTray() {
@@ -1250,6 +1260,7 @@ public class ColorsFragment extends Fragment {
         if (selectedWallImage != null && selectedColor != null) {
             selectedWallImage.setColorFilter(selectedColor.getColor());
             selectedColor = null;
+            hideWallBorders();
         }
     }
 
@@ -1267,7 +1278,10 @@ public class ColorsFragment extends Fragment {
                 Wall wall = walls.get(i);
                 ImageView wallImage = addRoomImage(wall.getImageRes(), wall.getName());
                 wallImage.setColorFilter(wall.getDefaultColor());
-                wall.setWallImage(wallImage, onWallTouchListener);
+                ImageView borderImage = addRoomImage(wall.getBorderImageRes(), wall.getName()+" Border");
+                borderImage.setColorFilter(Color.BLUE);
+                borderImage.setVisibility(View.INVISIBLE);
+                wall.setWallImage(wallImage, borderImage, onWallTouchListener);
                 if (i == 0) {
                     selectedWallImage = wallImage;
                 }

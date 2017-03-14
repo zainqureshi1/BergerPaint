@@ -143,4 +143,13 @@ public class Wall {
         return new Wall(getName(), getImageRes(), getBorderImageRes(), getDefaultColor());
     }
 
+    public void recycle() {
+        if (wallImage != null) {
+            ((BitmapDrawable)wallImage.getDrawable()).getBitmap().recycle();
+        }
+        if (borderImage != null) {
+            ((BitmapDrawable)borderImage.getDrawable()).getBitmap().recycle();
+        }
+    }
+
 }

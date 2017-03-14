@@ -1215,10 +1215,25 @@ public class ColorsFragment extends Fragment {
         }
     }
 
+    private void cleanPreviousRoom() {
+        if (wallsList != null) {
+            for (Wall wall : wallsList) {
+                try {
+                    wall.recycle();
+                } catch (Exception ex) {
+                }
+            }
+        }
+    }
+
     private void setRoom(Room room) {
         if (relativeLayoutPictureContainer == null) {
             return;
         }
+        if (room == this.room) {
+            return;
+        }
+        cleanPreviousRoom();
         this.room = room;
 
         relativeLayoutPictureContainer.removeAllViews();

@@ -109,7 +109,7 @@ public class MainActivity extends FragmentActivity implements OnFragmentInteract
                 ProductsFragment.setSelectedColor((SecondaryColor) obj);
                 break;
             case COLORS_NEXT_CLICK:
-                ProductsFragment.setSelectedColor((SecondaryColor) obj);
+                //ProductsFragment.setSelectedColor((SecondaryColor) obj);
                 viewPager.setCurrentItem(2);
                 break;
         }

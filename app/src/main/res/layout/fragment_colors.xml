@@ -5,32 +5,17 @@
     tools:context="com.e2esp.bergerpaint.fragments.ColorsFragment">
 
     <LinearLayout
-        android:id="@+id/linearLayoutColorChoiceContainer"
+        android:id="@+id/linearLayoutOptionsContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginTop="@dimen/margin_small"
-        android:padding="@dimen/margin_tiny"
         android:orientation="vertical" >
-
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/textViewChooseWall"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/margin_tiny"
-            android:gravity="center"
-            android:drawableLeft="@mipmap/drop_down_arrow"
-            android:lines="1"
-            android:text="@string/select_a_wall"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_size_medium"
-            android:textStyle="bold"
-            android:background="@drawable/bordered_button" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_tiny"
+            android:padding="@dimen/margin_tiny"
             android:orientation="horizontal" >
 
             <android.support.v7.widget.AppCompatTextView
@@ -66,16 +51,11 @@
 
         </LinearLayout>
 
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/textViewSelectedColor"
-            android:layout_width="match_parent"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerViewWallsTray"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/margin_tiny"
-            android:gravity="center"
-            android:lines="1"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_size_medium"
-            android:textStyle="bold" />
+            android:scrollbars="horizontal" />
 
     </LinearLayout>
 
@@ -83,7 +63,7 @@
         android:id="@+id/relativeLayoutProductsTrayContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayoutColorChoiceContainer"
+        android:layout_below="@+id/linearLayoutOptionsContainer"
         android:layout_above="@+id/textViewNext"
         android:background="@color/slight_transparent"
         android:visibility="gone" >
@@ -130,7 +110,7 @@
         android:id="@+id/relativeLayoutColorsTrayContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayoutColorChoiceContainer"
+        android:layout_below="@+id/linearLayoutOptionsContainer"
         android:layout_above="@+id/textViewNext"
         android:background="@color/slight_transparent"
         android:visibility="gone" >
@@ -173,19 +153,11 @@
 
     </RelativeLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerViewWallsTray"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayoutColorChoiceContainer"
-        android:layout_above="@+id/textViewNext"
-        android:scrollbars="vertical" />
-
     <RelativeLayout
         android:id="@+id/relativeLayoutPictureContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/linearLayoutColorChoiceContainer"
+        android:layout_below="@+id/linearLayoutOptionsContainer"
         android:layout_above="@+id/textViewNext"
         android:layout_margin="@dimen/margin_tiny" />
 

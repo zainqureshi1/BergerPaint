@@ -37,12 +37,10 @@ public class ColorsFragment extends Fragment {
 
     private static ColorsFragment latestInstance;
 
-    private AppCompatTextView textViewChooseWall;
     private AppCompatTextView textViewSymphonyColor;
     private AppCompatTextView textViewProductColor;
     private AppCompatTextView textViewShadesOfColor;
     private AppCompatTextView textViewColorsOfProduct;
-    private AppCompatTextView textViewSelectedColor;
 
     private RelativeLayout relativeLayoutPictureContainer;
     private RelativeLayout relativeLayoutColorsTrayContainer;
@@ -66,12 +64,10 @@ public class ColorsFragment extends Fragment {
 
     private Room room;
 
-    private ImageView selectedWallImage;
-    private SecondaryColor selectedColor;
+    private Wall selectedWall;
 
     private OnFragmentInteractionListener onFragmentInteractionListener;
 
-    private boolean wallsTrayVisible;
     private boolean colorsTrayVisible;
     private boolean productsTrayVisible;
 
@@ -114,17 +110,6 @@ public class ColorsFragment extends Fragment {
     }
 
     private void setupViews(View view) {
-        textViewChooseWall = (AppCompatTextView) view.findViewById(R.id.textViewChooseWall);
-        textViewChooseWall.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (wallsTrayVisible) {
-                    hideWallsTray();
-                } else {
-                    showWallsTray();
-                }
-            }
-        });
         textViewSymphonyColor = (AppCompatTextView) view.findViewById(R.id.textViewSymphonyColors);
         textViewSymphonyColor.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,7 +135,6 @@ public class ColorsFragment extends Fragment {
 
         textViewShadesOfColor = (AppCompatTextView) view.findViewById(R.id.textViewShadesOfColor);
         textViewColorsOfProduct = (AppCompatTextView) view.findViewById(R.id.textViewColorsOfProduct);
-        textViewSelectedColor = (AppCompatTextView) view.findViewById(R.id.textViewSelectedColor);
 
         relativeLayoutPictureContainer = (RelativeLayout) view.findViewById(R.id.relativeLayoutPictureContainer);
         relativeLayoutColorsTrayContainer = (RelativeLayout) view.findViewById(R.id.relativeLayoutColorsTrayContainer);
@@ -166,7 +150,7 @@ public class ColorsFragment extends Fragment {
                 wallClicked(wall);
             }
         });
-        recyclerViewWallsTray.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        recyclerViewWallsTray.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewWallsTray.setAdapter(wallsRecyclerAdapter);
 
         recyclerViewColorsTray = (RecyclerView) view.findViewById(R.id.recyclerViewColorsTray);
@@ -203,55 +187,27 @@ public class ColorsFragment extends Fragment {
     }
 
     private void nextClicked() {
-        onFragmentInteractionListener.onInteraction(OnFragmentInteractionListener.COLORS_NEXT_CLICK, selectedColor);
-    }
-
-    private void showWallsTray() {
-        if (room == null) {
-            return;
-        }
-        hideColorsTray();
-        hideProductsTray();
-        wallsTrayVisible = true;
-        recyclerViewWallsTray.bringToFront();
-        showWallsTray(0);
-    }
-
-    private void showWallsTray(final int iteration) {
-        if (iteration >= room.getWallsList().size() || !wallsTrayVisible) {
-            return;
-        }
-        wallsList.add(room.getWallsList().get(iteration).clone());
-        wallsRecyclerAdapter.notifyDataSetChanged();
-        recyclerViewWallsTray.post(new Runnable() {
-            @Override
-            public void run() {
-                showWallsTray(iteration + 1);
-            }
-        });
-    }
-
-    private void hideWallsTray() {
-        wallsTrayVisible = false;
-        wallsList.clear();
-        wallsRecyclerAdapter.notifyDataSetChanged();
-        relativeLayoutPictureContainer.bringToFront();
+        onFragmentInteractionListener.onInteraction(OnFragmentInteractionListener.COLORS_NEXT_CLICK, null);
     }
 
     private void wallClicked(Wall wall) {
-        hideWallsTray();
-        textViewChooseWall.setText(wall.getName());
-        selectedWallImage = wall.getWallImage();
-        hideWallBorders();
-        wall.showBorder(true);
+        selectedWall = wall;
+        hideAllWallsBorders();
+        selectedWall.showBorder(true);
+        deselectAllWalls();
+        selectedWall.setSelected(true);
+        wallsRecyclerAdapter.notifyDataSetChanged();
     }
 
-    private void hideWallBorders() {
-        if (room != null && room.getWallsList() != null) {
-            ArrayList<Wall> walls = room.getWallsList();
-            for (int i = 0; i < walls.size(); i++) {
-                walls.get(i).showBorder(false);
-            }
+    private void hideAllWallsBorders() {
+        for (int i = 0; i < wallsList.size(); i++) {
+            wallsList.get(i).showBorder(false);
+        }
+    }
+
+    private void deselectAllWalls() {
+        for (int i = 0; i < wallsList.size(); i++) {
+            wallsList.get(i).setSelected(false);
         }
     }
 
@@ -779,7 +735,6 @@ public class ColorsFragment extends Fragment {
 
     private void showColorsTray() {
         hideProductsTray();
-        hideWallsTray();
         colorsTrayVisible = true;
         relativeLayoutColorsTrayContainer.setVisibility(View.VISIBLE);
         relativeLayoutColorsTrayContainer.bringToFront();
@@ -1082,7 +1037,6 @@ public class ColorsFragment extends Fragment {
 
     private void showProductsTray() {
         hideColorsTray();
-        hideWallsTray();
         productsTrayVisible = true;
         relativeLayoutProductsTrayContainer.setVisibility(View.VISIBLE);
         relativeLayoutProductsTrayContainer.bringToFront();
@@ -1248,19 +1202,16 @@ public class ColorsFragment extends Fragment {
     private void secondaryColorClicked(SecondaryColor color) {
         hideColorsTray();
         hideProductsTray();
-        selectedColor = color;
-        textViewSelectedColor.setText(selectedColor.getName());
-        textViewSelectedColor.setTextColor(selectedColor.getColor());
-        updateWallColor();
+        updateWallColor(color);
 
         onFragmentInteractionListener.onInteraction(OnFragmentInteractionListener.COLOR_SELECTED, color);
     }
 
-    private void updateWallColor() {
-        if (selectedWallImage != null && selectedColor != null) {
-            selectedWallImage.setColorFilter(selectedColor.getColor());
-            selectedColor = null;
-            hideWallBorders();
+    private void updateWallColor(SecondaryColor color) {
+        if (selectedWall != null && color != null) {
+            selectedWall.setSelectedColor(color);
+            wallsRecyclerAdapter.notifyDataSetChanged();
+            hideAllWallsBorders();
         }
     }
 
@@ -1271,11 +1222,12 @@ public class ColorsFragment extends Fragment {
         this.room = room;
 
         relativeLayoutPictureContainer.removeAllViews();
+        wallsList.clear();
 
         ArrayList<Wall> walls = room.getWallsList();
         if (walls != null && walls.size() > 0) {
             for (int i = 0; i < walls.size(); i++) {
-                Wall wall = walls.get(i);
+                Wall wall = walls.get(i).clone();
                 ImageView wallImage = addRoomImage(wall.getImageRes(), wall.getName());
                 wallImage.setColorFilter(wall.getDefaultColor());
                 ImageView borderImage = addRoomImage(wall.getBorderImageRes(), wall.getName()+" Border");
@@ -1283,16 +1235,16 @@ public class ColorsFragment extends Fragment {
                 borderImage.setVisibility(View.INVISIBLE);
                 wall.setWallImage(wallImage, borderImage, onWallTouchListener);
                 if (i == 0) {
-                    selectedWallImage = wallImage;
+                    selectedWall = wall;
+                    selectedWall.setSelected(true);
                 }
+                wallsList.add(wall);
             }
         }
 
         addRoomImage(room.getTransparentImageRes(), room.getName());
 
-        textViewChooseWall.setText(R.string.select_a_wall);
-        selectedColor = null;
-        textViewSelectedColor.setText("");
+        wallsRecyclerAdapter.notifyDataSetChanged();
         textViewShadesOfColor.setText("");
         textViewColorsOfProduct.setText("");
     }
@@ -1327,12 +1279,12 @@ public class ColorsFragment extends Fragment {
 
     public static boolean backPressed() {
         if (latestInstance != null) {
-            if (latestInstance.wallsTrayVisible) {
-                latestInstance.hideWallsTray();
-                return true;
-            }
             if (latestInstance.colorsTrayVisible) {
                 latestInstance.hideColorsTray();
+                return true;
+            }
+            if (latestInstance.productsTrayVisible) {
+                latestInstance.hideProductsTray();
                 return true;
             }
         }

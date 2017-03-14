@@ -24,16 +24,18 @@ public class Wall {
     private ImageView wallImage;
     private ImageView borderImage;
 
-    public Wall(String name, int imageRes, int borderImageRes, int defaultColor) {
-        this(name, imageRes, borderImageRes, defaultColor, null);
-    }
+    private boolean selected;
+    private SecondaryColor selectedColor;
 
-    public Wall(String name, int imageRes, int borderImageRes, int defaultColor, ImageView wallImage) {
+    public Wall(String name, int imageRes, int borderImageRes, int defaultColor) {
         this.name = name;
         this.imageRes = imageRes;
         this.borderImageRes = borderImageRes;
         this.defaultColor = defaultColor;
-        this.wallImage = wallImage;
+        this.wallImage = null;
+        this.borderImage = null;
+        this.selected = false;
+        this.selectedColor = null;
     }
 
     public String getName() {
@@ -118,8 +120,27 @@ public class Wall {
         }
     }
 
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
+    public SecondaryColor getSelectedColor() {
+        return selectedColor;
+    }
+
+    public void setSelectedColor(SecondaryColor selectedColor) {
+        this.selectedColor = selectedColor;
+        if (wallImage != null) {
+            wallImage.setColorFilter(selectedColor.getColor());
+        }
+    }
+
     public Wall clone() {
-        return new Wall(getName(), getImageRes(), getBorderImageRes(), getDefaultColor(), getWallImage());
+        return new Wall(getName(), getImageRes(), getBorderImageRes(), getDefaultColor());
     }
 
 }

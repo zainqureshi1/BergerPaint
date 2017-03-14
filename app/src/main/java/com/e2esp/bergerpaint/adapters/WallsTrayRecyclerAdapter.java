@@ -1,15 +1,16 @@
 package com.e2esp.bergerpaint.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.e2esp.bergerpaint.R;
 import com.e2esp.bergerpaint.interfaces.OnTraysWallClickListener;
+import com.e2esp.bergerpaint.models.SecondaryColor;
 import com.e2esp.bergerpaint.models.Wall;
 
 import java.util.ArrayList;
@@ -48,18 +49,37 @@ public class WallsTrayRecyclerAdapter extends RecyclerView.Adapter<WallsTrayRecy
 
     public class WallViewHolder extends RecyclerView.ViewHolder {
 
-        private LinearLayout linearLayoutWall;
+        private View topView;
         private TextView textViewName;
+        private TextView textViewColor;
+        private TextView textViewCode;
 
         public WallViewHolder(View itemView) {
             super(itemView);
-            linearLayoutWall = (LinearLayout) itemView.findViewById(R.id.linearLayoutWall);
+            topView = itemView;
             textViewName = (TextView) itemView.findViewById(R.id.textViewWallName);
+            textViewColor = (TextView) itemView.findViewById(R.id.textViewColorName);
+            textViewCode = (TextView) itemView.findViewById(R.id.textViewColorCode);
         }
 
         public void bindView(final Wall wall) {
             textViewName.setText(wall.getName());
-            linearLayoutWall.setOnClickListener(new View.OnClickListener() {
+            SecondaryColor color = wall.getSelectedColor();
+            if (color != null) {
+                textViewColor.setText(color.getName());
+                textViewColor.setTextColor(color.getColor());
+                textViewCode.setText(color.getColorCode());
+                textViewCode.setTextColor(color.getColor());
+            } else {
+                textViewColor.setText("");
+                textViewCode.setText("");
+            }
+            if (wall.isSelected()) {
+                topView.setBackgroundColor(Color.BLUE);
+            } else {
+                topView.setBackgroundColor(Color.TRANSPARENT);
+            }
+            topView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     onWallClickListener.onWallClick(wall);

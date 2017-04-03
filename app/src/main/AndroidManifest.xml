@@ -17,6 +17,10 @@
         </activity>
         <activity android:name=".activities.MainActivity"
             android:screenOrientation="portrait" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="ab0328d1f8aeb67ac9441a3c9296bf906233827e" />
     </application>
 
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

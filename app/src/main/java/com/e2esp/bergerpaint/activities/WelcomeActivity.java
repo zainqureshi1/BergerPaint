@@ -9,14 +9,17 @@ import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.e2esp.bergerpaint.R;
 import com.e2esp.bergerpaint.utils.JustifiedTextView;
+import io.fabric.sdk.android.Fabric;
 
 public class WelcomeActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_welcome);
 

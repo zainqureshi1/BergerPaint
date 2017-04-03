@@ -7,6 +7,5 @@ import com.e2esp.bergerpaint.models.Product;
  */
 
 public interface OnProductClickListener {
-    void onBuyClick(Product product);
     void onLearnMoreClick(Product product);
 }

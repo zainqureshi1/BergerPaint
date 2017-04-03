@@ -5,9 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.e2esp.bergerpaint.R;
@@ -37,7 +35,7 @@ public class ProductRecyclerAdapter extends RecyclerView.Adapter<ProductRecycler
 
     @Override
     public ProductViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.card_product_layout_new, parent, false);
+        View view = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.card_product_layout, parent, false);
         return new ProductViewHolder(view);
     }
 
@@ -60,7 +58,6 @@ public class ProductRecyclerAdapter extends RecyclerView.Adapter<ProductRecycler
         private ImageView imageView;
         private TextView textViewTitle;
         private TextView textViewDescription;
-        private TextView textViewBuy;
         private TextView textViewLearnMore;
 
         public ProductViewHolder(View itemView) {
@@ -68,7 +65,6 @@ public class ProductRecyclerAdapter extends RecyclerView.Adapter<ProductRecycler
             imageView = (ImageView) itemView.findViewById(R.id.imageViewProduct);
             textViewTitle = (TextView) itemView.findViewById(R.id.textViewProductTitle);
             textViewDescription = (TextView) itemView.findViewById(R.id.textViewProductDescription);
-            textViewBuy = (TextView) itemView.findViewById(R.id.textViewProductBuy);
             textViewLearnMore = (TextView) itemView.findViewById(R.id.textViewProductLearnMore);
         }
 
@@ -77,12 +73,6 @@ public class ProductRecyclerAdapter extends RecyclerView.Adapter<ProductRecycler
             textViewTitle.setText(product.getName());
             textViewDescription.setText(product.getDescription());
 
-            textViewBuy.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onProductClickListener.onBuyClick(product);
-                }
-            });
             textViewLearnMore.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

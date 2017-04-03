@@ -821,6 +821,7 @@ public class ColorsFragment extends Fragment {
         allProductColorsList.add(new ProductColor("Elegance", R.drawable.berger_elegance_matt_emulsion, secondaryColors));
 
         // Weather Coat
+        secondaryColors = new ArrayList<>();
         secondaryColors.add(new SecondaryColor(Color.parseColor("#3a5968"), "Noble Blue", "1051"));
         secondaryColors.add(new SecondaryColor(Color.parseColor("#E9E1D5"), "Almond", "4090"));
         secondaryColors.add(new SecondaryColor(Color.parseColor("#DDDAD0"), "Ash white", "0110"));
@@ -874,6 +875,7 @@ public class ColorsFragment extends Fragment {
         allProductColorsList.add(new ProductColor("Weather Coat", R.drawable.berger_weathercoat_acrylic_exterior_finish, secondaryColors));
 
         // Eazy Clean
+        secondaryColors = new ArrayList<>();
         secondaryColors.add(new SecondaryColor(Color.parseColor("#E7E2DB"), "Almond White", "0480"));
         secondaryColors.add(new SecondaryColor(Color.parseColor("#BBD4D6"), "Aqua Blue", "1010"));
         secondaryColors.add(new SecondaryColor(Color.parseColor("#C4D1DA"), "Charisma", "1270"));
@@ -889,6 +891,7 @@ public class ColorsFragment extends Fragment {
         allProductColorsList.add(new ProductColor("Easy Clean", R.drawable.berger_easy_clean_emulsion, secondaryColors));
 
         // Silk
+        secondaryColors = new ArrayList<>();
         secondaryColors.add(new SecondaryColor(Color.parseColor("#FFFFEB"), "Cotton Ball", "S119"));
         secondaryColors.add(new SecondaryColor(Color.parseColor("#FBEDD3"), "Coast White", "S129"));
         secondaryColors.add(new SecondaryColor(Color.parseColor("#FFF5E8"), "Candle Wax", "S116"));
@@ -923,6 +926,7 @@ public class ColorsFragment extends Fragment {
         allProductColorsList.add(new ProductColor("Silk Emulsion", R.drawable.berger_silk_emulsion, secondaryColors));
 
         // All Rounder
+        secondaryColors = new ArrayList<>();
         secondaryColors.add(new SecondaryColor(Color.parseColor("#FFFAF0"), "Off white Plus", "0120"));
         secondaryColors.add(new SecondaryColor(Color.parseColor("#FFF3E7"), "D/R off White", "0229"));
         secondaryColors.add(new SecondaryColor(Color.parseColor("#EFE3D9"), "Satin Magnolia", "3249"));
@@ -968,6 +972,7 @@ public class ColorsFragment extends Fragment {
         allProductColorsList.add(new ProductColor("All Rounder", R.drawable.berger_allrounder_matt_enamel, secondaryColors));
 
         // SPD
+        secondaryColors = new ArrayList<>();
         secondaryColors.add(new SecondaryColor(Color.parseColor("#93C681"), "Apple Green", "2420"));
         secondaryColors.add(new SecondaryColor(Color.parseColor("#DBDAD0"), "Ash White,", "0110"));
         secondaryColors.add(new SecondaryColor(Color.parseColor("#E8E1D7"), "Badami", "6450"));
@@ -994,6 +999,7 @@ public class ColorsFragment extends Fragment {
         allProductColorsList.add(new ProductColor("SPD", R.drawable.berger_new_spd_smooth_emulsion, secondaryColors));
 
         // VIP Super Gloss Enamel
+        secondaryColors = new ArrayList<>();
         secondaryColors.add(new SecondaryColor(Color.parseColor("#D2CFC0"), "Ash grey.", "6030"));
         secondaryColors.add(new SecondaryColor(Color.parseColor("#C0DAD8"), "Bali Blue", "1428"));
         secondaryColors.add(new SecondaryColor(Color.parseColor("#CCB195"), "Beige.", "3390"));
@@ -1257,9 +1263,11 @@ public class ColorsFragment extends Fragment {
     private ImageView addRoomImage(int resId, String tag) {
         ImageView imageViewRoom = new ImageView(getContext());
         imageViewRoom.setImageResource(resId);
+        imageViewRoom.setScaleType(ImageView.ScaleType.FIT_CENTER);
         imageViewRoom.setTag(tag);
 
-        RelativeLayout.LayoutParams layoutParamsRoom = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams layoutParamsRoom = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+
         layoutParamsRoom.addRule(RelativeLayout.CENTER_IN_PARENT);
         relativeLayoutPictureContainer.addView(imageViewRoom, layoutParamsRoom);
 

@@ -56,10 +56,6 @@ public class ProductsFragment extends Fragment {
         int color = selectedColor != null ? selectedColor.getColor() : getResources().getColor(R.color.white);
         productRecyclerAdapter = new ProductRecyclerAdapter(getContext(), arrayListProducts, color, new OnProductClickListener() {
             @Override
-            public void onBuyClick(Product product) {
-                buyClicked(product);
-            }
-            @Override
             public void onLearnMoreClick(Product product) {
                 learnMoreClicked(product);
             }
@@ -85,10 +81,6 @@ public class ProductsFragment extends Fragment {
         arrayListProducts.add(new Product("Weathercoat Acrylic Exterior Finish", "Weathercoat is a smooth water based masonry exterior paint. It contains tough flexible resin pigmented with titanium dioxide and light fast pigments. Its smooth finish has the highest degree of durability and is resistant to all types of weather conditions.", "http://berger.com.pk/business-lines/decorative-business/exteriors/weathercoat-acrylic-exterior-finish/", R.drawable.berger_weathercoat_acrylic_exterior_finish));
 
         productRecyclerAdapter.notifyDataSetChanged();
-    }
-
-    private void buyClicked(Product product) {
-
     }
 
     private void learnMoreClicked(Product product) {

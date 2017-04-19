@@ -27,8 +27,8 @@
     <string name="product_name">Product Name</string>
     <string name="product_description">Product Description</string>
 
-    <string name="buy">Buy</string>
     <string name="learn_more">Learn More</string>
+    <string name="view_colors">View Colors</string>
 
     <string name="press_back_again_to_exit">Press BACK again to exit</string>
 

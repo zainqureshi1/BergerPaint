@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     android:orientation="vertical"
-    tools:context="com.e2esp.bergerpaint.activities.MainActivity" >
+    tools:context=".activities.MainActivity" >
 
     <com.astuetz.PagerSlidingTabStrip
         android:id="@+id/tabStrip"

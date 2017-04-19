@@ -64,12 +64,26 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/textViewProductTitle"
                         android:layout_alignParentRight="true"
-                        android:layout_marginLeft="@dimen/margin_small"
                         android:layout_marginRight="@dimen/margin_small"
                         android:layout_marginTop="@dimen/margin_small"
                         android:padding="@dimen/margin_small"
                         android:gravity="center"
                         android:text="@string/learn_more"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_medium_lower"
+                        android:background="@drawable/button_with_shadow" />
+
+                    <TextView
+                        android:id="@+id/textViewProductViewColors"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textViewProductTitle"
+                        android:layout_toLeftOf="@+id/textViewProductLearnMore"
+                        android:layout_marginRight="@dimen/margin_small"
+                        android:layout_marginTop="@dimen/margin_small"
+                        android:padding="@dimen/margin_small"
+                        android:gravity="center"
+                        android:text="@string/view_colors"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_medium_lower"
                         android:background="@drawable/button_with_shadow" />

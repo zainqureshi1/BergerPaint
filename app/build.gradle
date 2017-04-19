@@ -19,7 +19,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
-        applicationId "com.e2esp.bergerpaint"
+        applicationId "com.e2esp.bergerpaints.visualizer"
         minSdkVersion 15
         targetSdkVersion 25
         versionCode 1

@@ -4,13 +4,13 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.e2esp.bergerpaints.visualizer.R;
 import com.e2esp.bergerpaints.visualizer.adapters.GridSpacingItemDecoration;
@@ -73,8 +73,8 @@ public class RoomsFragment extends Fragment {
     }
 
     private void setupView(View view) {
-        AppCompatTextView textViewNext = (AppCompatTextView) view.findViewById(R.id.textViewNext);
-        textViewNext.setOnClickListener(new View.OnClickListener() {
+        ImageView imageViewNext = (ImageView) view.findViewById(R.id.imageViewNext);
+        imageViewNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 nextClicked();

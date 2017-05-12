@@ -1,6 +1,8 @@
 package com.e2esp.bergerpaints.visualizer.fragments;
 
+import android.Manifest;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -30,7 +32,10 @@ import com.e2esp.bergerpaints.visualizer.models.ProductColor;
 import com.e2esp.bergerpaints.visualizer.models.Room;
 import com.e2esp.bergerpaints.visualizer.models.SecondaryColor;
 import com.e2esp.bergerpaints.visualizer.models.Wall;
+import com.e2esp.bergerpaints.visualizer.utils.PermissionManager;
+import com.e2esp.bergerpaints.visualizer.utils.Utility;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class ColorsFragment extends Fragment {
@@ -177,8 +182,16 @@ public class ColorsFragment extends Fragment {
         recyclerViewProductsTray.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerViewProductsTray.setAdapter(productsRecyclerAdapter);
 
-        AppCompatTextView textViewNext = (AppCompatTextView) view.findViewById(R.id.textViewNext);
-        textViewNext.setOnClickListener(new View.OnClickListener() {
+        ImageView imageViewSave = (ImageView) view.findViewById(R.id.imageViewSave);
+        imageViewSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createAndSaveScreenshot();
+            }
+        });
+
+        ImageView imageViewNext = (ImageView) view.findViewById(R.id.imageViewNext);
+        imageViewNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 nextClicked();
@@ -1298,6 +1311,27 @@ public class ColorsFragment extends Fragment {
             @Override
             public void run() {
                 showProductColorsTray(product);
+            }
+        });
+    }
+
+    private void createAndSaveScreenshot() {
+        PermissionManager.getInstance().checkPermissionRequest(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE, 121, getString(R.string.app_name) + " requires permission to save room image in storage.", new PermissionManager.Callback() {
+            @Override
+            public void onGranted() {
+                Bitmap roomBitmap = Utility.drawBitmapOfView(relativeLayoutPictureContainer);
+                File file = Utility.saveToStorage(getContext(), roomBitmap, room.getName()+"_"+System.currentTimeMillis());
+                if (file != null) {
+                    Utility.showToast(getContext(), "Image of this room saved successfully in storage.");
+                    Utility.broadcastGalleryUpdate(getContext(), file);
+                } else {
+                    Utility.showToast(getContext(), "Unable to save image. Try again.");
+                }
+                relativeLayoutPictureContainer.requestLayout();
+            }
+            @Override
+            public void onDenied() {
+                Utility.showToast(getContext(), "Permission denied to save image in storage.");
             }
         });
     }
